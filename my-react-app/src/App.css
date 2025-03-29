@@ -1,0 +1,120 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  --lighterMainColor: #2f302f;
+} */
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App {
+  text-align: center;
+} 
+
+
+:root {
+  --lighterMainColor: #2f302f;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.display-outer-container {
+  overflow-x: hidden; 
+  overflow-y: hidden; 
+  display: flex; 
+  flex-direction: row;
+  background-color: var(--lighterMainColor);
+}
+
+.display-inner-container {
+  height: 100%;
+  width: 100%;
+  background-color: var(--lighterMainColor);
+  margin-top: 60px;
+  margin-left: 200px;
+}
+
+.artist-card {
+  background-color: #121212;
+  margin: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.artist-card:hover {
+  background-color: #1e1e1e;
+}
+
+.artist-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.artist-name {
+  color: white;
+  font-size: 1rem;
+  margin: 0;
+  flex: 1;
+}
+
+.play-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: border-color 0.25s;
+}
