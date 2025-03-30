@@ -1,56 +1,63 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  --lighterMainColor: #2f302f;
-} */
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App {
-  text-align: center;
-} 
-
-
 :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #2f302f;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   --lighterMainColor: #2f302f;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+a:hover {
+  color: #535bf2;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #666666;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
   }
 }
 
@@ -70,51 +77,35 @@
   margin-left: 200px;
 }
 
-.artist-card {
-  background-color: #121212;
-  margin: 8px;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  max-width: 300px;
+.cover-display {
+  width: 25vw;
+  height: 55vh;
+  margin-top: 80px;
+  margin-left: 120px;
+  border-radius: 0;
 }
 
-.artist-card:hover {
-  background-color: #1e1e1e;
-}
-
-.artist-image {
-  width: 100%;
+.card-media-img {
+  background-image: var(--url);
   height: 200px;
-  object-fit: cover;
-  border-radius: 4px;
 }
 
-.artist-info {
+.song-album-display {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
+  margin-left: 200px;
+  height: 100vh;
 }
 
-.artist-name {
-  color: white;
-  font-size: 1rem;
-  margin: 0;
-  flex: 1;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
 }
 
-.play-button {
-  background-color: transparent;
+.grid-item {
   color: white;
-  border: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  transition: border-color 0.25s;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
 }

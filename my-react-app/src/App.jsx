@@ -43,11 +43,10 @@ function App() {
           path='/top-artists' 
           element={
             <div>
-              {/* <Menu
+              <Menu
                 componentIndex={0}
-                setArtistTerm={setArtistTerm}
-                term={artistTerm}
-              /> */}
+                setTerm={setArtistTerm}
+              />
               <TopArtists
                 artistTerm={artistTerm}
               />
@@ -60,8 +59,7 @@ function App() {
             <div>
               <Menu
                 componentIndex={1}
-                setSongTerm={setSongTerm}
-                term={songTerm}
+                setTerm={setSongTerm}
               />
               <TopSongs
                 songTerm={songTerm}
@@ -74,8 +72,7 @@ function App() {
             <div>
               <Menu
                 componentIndex={2}
-                setAlbumTerm={setAlbumTerm}
-                term={albumTerm}
+                setTerm={setAlbumTerm}
               />
               <TopAlbums
                 albumTerm={albumTerm}

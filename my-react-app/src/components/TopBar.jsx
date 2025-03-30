@@ -1,20 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { AppBar, Box, IconButton, Typography, Tooltip, Avatar, Popper, ClickAwayListener, 
-    Grow, MenuList, MenuItem, Paper, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import { darkerMainColor, githubUrl, lighterMainColor, mainColor } from '../common';
-//import LogoutIcon from '@mui/icons-material/Logout';
-import { FaSpotify } from 'react-icons/fa';
 import { spotifyGreen } from '../common';
-import { setLocalAccessToken } from '../common';
 import { useNavigate, Link } from 'react-router-dom';
 import { getProfile } from '../clients/SpotifyClient';
-import { SpotifyPlayButton } from './MaterialComponentsCss';
+import { Icon } from '@mui/material';
+import styles from './TopBar.module.css';
 
 const TopBar = () => {
   const navigate = useNavigate();
-  const [profileData, setProfileData] = useState();
-  const [openProfileMenu, setOpenProfileMenu] = useState(false);
-  const anchorRef = useRef(null);
+  const [profileData, setProfileData] = useState(null);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const getProfileWrapper = async () => {
@@ -32,127 +27,62 @@ const TopBar = () => {
     navigate('/');
   };
 
-  const handleAvatarClick = () => {
-    setOpenProfileMenu(!openProfileMenu);
-  }
-
-  const handleProfileMenuClose = () => {
-    setOpenProfileMenu(false);
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
   }
 
   return (
-        <AppBar
-            sx={{
-                position: 'fixed',
-                display: 'flex',
-                flexDirection: 'row',
-                backgroundColor: darkerMainColor,
-                height: '60px',
-                top: '0px',
-                width: '100%'
-            }}
-        >
-            <FaSpotify
-                size={60}
-                color={spotifyGreen}
-                style={{
-                    backgroundColor: darkerMainColor,
-                    marginLeft: 10
-                }}
-             />
-            <Typography
-                sx={{
-                    margin: 2
-                }}
+    <header className={styles["top-bar"]}>
+        <div className={styles["left-section"]}>
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 496 512"
+                fill={spotifyGreen}
+                width="50"
+                height="50"
             >
-                Spotify Stats
-            </Typography>
-            <Box sx={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                    <Button
-                        sx={{
-                            color: 'white'
-                        }}
-                        href={githubUrl}
-                        target='_blank'
-                    >
-                        Github
-                    </Button>
-                    <IconButton
-                        onClick={handleAvatarClick}
-                        ref={anchorRef}
-                    >
-                        <Tooltip
-                            title='Account'
-                            placement='bottom'
-                        >
-                            <Avatar
-                                src={profileData?.images[1]?.url}
-                            />
-                        </Tooltip>
-                        <Popper
-                            open={openProfileMenu}
-                            placement='bottom-start'
-                            transition
-                            anchorEl={anchorRef.current}
-                        >
-                            {({ TransitionProps, placement }) => (
-                            <Grow
-                            {...TransitionProps}
-                            style={{
-                                transformOrigin:
-                                placement === 'bottom-start' ? 'left top' : 'left bottom',
-                            }}
-                            >
-                            <Paper>
-                                <ClickAwayListener onClickAway={handleProfileMenuClose}>
-                                <MenuList
-                                    autoFocusItem={openProfileMenu}
-                                    sx={{
-                                        display: 'flex', 
-                                        justifyContent: 'center', 
-                                        alignItems: 'center', 
-                                        flexDirection: 'column',
-                                        backgroundColor: mainColor,
-                                        color: 'white'
-                                    }}
-                                >
-                                    <Typography>
-                                        {profileData?.display_name}
-                                    </Typography>
-                                    <Typography>
-                                        {`${profileData?.followers.total} followers`}
-                                    </Typography>
-                                    <MenuItem
-                                        component={Link}
-                                        to={profileData?.external_urls?.spotify}
-                                        target='_blank'
-                                    >
-                                        Go to your Spotify page
-                                    </MenuItem>
-                                </MenuList>
-                                </ClickAwayListener>
-                            </Paper>
-                            </Grow>
-                            )}
-                        </Popper>
-                    </IconButton>
-                <Tooltip
-                    title='Log out'
-                    placement='bottom'
-                >
-                    <IconButton
-                        onClick={handleLogout}
-                    >
-                        {/* <LogoutIcon
-                            sx={{
-                                fontSize: 30,
-                                color: 'white'
-                            }}
-                        /> */}
-                    </IconButton>
-                </Tooltip>
-            </Box>
-        </AppBar>
+            {/* Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc. */}
+                <path
+                    d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"
+                />
+            </svg>
+            <span className={styles["app-title"]}>Spotify stats - React</span>
+        </div>
+
+        <div className={styles["right-section"]}>
+            <a className={styles["github-button"]} href={githubUrl} target="_blank" title="GitHub">
+                GitHub
+            </a>
+            {profileData && <div className={styles["profile-wrapper"]}>
+                <img
+                    src={profileData.images[1].url}
+                    alt="Profile"
+                    className={styles["profile-img"]}
+                    onClick={toggleMenu}
+                    title="Account"
+                />
+                {showMenu && <div className={styles["dropdown-menu"]}>
+                    <p>{profileData.display_name}</p>
+                    <p>{profileData.followers.total} followers</p>
+                    <hr />
+                    <a href={profileData.external_urls.spotify} target="_blank">
+                        Go to your Spotify page
+                    </a>
+                </div>}
+            </div>}
+            <button 
+                style={{
+                    backgroundColor: 'inherit'
+                }}
+                onClick={handleLogout} 
+                title="Log out"
+            >
+                <Icon>
+                    logout
+                </Icon>
+            </button>
+        </div>
+    </header>
   )
 }
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-import { Button } from '@mui/material';
 import logo from '../assets/react.svg';
 import  { spotifyGreen, getLoginUrl, getLocalAccessToken, getCodeFromUrl, getTokens, checkIfTokenHasExpired } from '../common';
 import { useNavigate } from 'react-router-dom';
+import styles from '../components/Login.module.css'
 
 
 const Login = () => {
@@ -26,24 +26,13 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="logo" alt="logo" />
+    <div className={styles["App"]}>
+      <header className={styles["App-header"]}>
+        <img src={logo} className={styles["logo"]} alt="logo" />
         {loginUrl && 
-            <Button
-                href={loginUrl}
-                variant='contained'
-                className="login-button"
-                sx={{
-                backgroundColor: spotifyGreen,
-                color: 'black',
-                '&:hover': {
-                    backgroundColor: '#68bd72'
-                }
-                }}
-            >
+            <a href={loginUrl}>
                 Log in with Spotify
-            </Button>
+            </a>
         }
       </header>
     </div>
