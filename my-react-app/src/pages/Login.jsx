@@ -30,7 +30,10 @@ const Login = () => {
       <header className={styles["App-header"]}>
         <img src={logo} className={styles["logo"]} alt="logo" />
         {loginUrl && 
-            <a href={loginUrl}>
+            <a 
+              href={loginUrl}
+              className={styles["login-button"]}
+             >
                 Log in with Spotify
             </a>
         }

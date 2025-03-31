@@ -1,17 +1,15 @@
 import React, { useContext } from 'react';
-import { mainColor } from '../common';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
-import { Icon } from '@mui/material';
 import styles from "./Artist.module.css";
 
-const ArtistCard = ({ className, artistInfo, index }) => {
+const ArtistCard = ({ className, artistInfo }) => {
   const setArtistId = useContext(AppContext)?.setArtistId;
   const setSongId = useContext(AppContext)?.setSongId;
   const setAlbumId = useContext(AppContext)?.setAlbumId;
   const setOpenBottomBar = useContext(AppContext)?.setOpenBottomBar;
   const navigate = useNavigate();
-
+  console.log('render')
   const handleClickPlayBtn = (e) => {
     e.stopPropagation();
     setArtistId(props.artistInfo?.id);
@@ -27,9 +25,9 @@ const ArtistCard = ({ className, artistInfo, index }) => {
   return (
     <div className={className}>
         <div className={styles["artist-card"]} onClick={handleClickArtist}>
-            <img className={styles["artist_image"]} src={artistInfo.images[0].url} alt={artistInfo.name} />
-            <div className={styles["artist_info"]}>
-                <p className={styles["artist_name"]}>{`${index}. ${artistInfo.name}`}</p>
+            <img className={styles["artist-image"]} src={artistInfo.images[0].url} alt={artistInfo.name} />
+            <div className={styles["artist-info"]}>
+                <p className={styles["artist-name"]}>{`${artistInfo.name}`}</p>
             </div>
             <button 
                 style={{backgroundColor: 'inherit'}} 
@@ -41,6 +39,6 @@ const ArtistCard = ({ className, artistInfo, index }) => {
         </div>
     </div>
   );
-}
+};
 
 export default ArtistCard;

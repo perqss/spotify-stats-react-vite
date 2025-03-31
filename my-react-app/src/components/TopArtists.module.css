@@ -1,0 +1,15 @@
+.card-wrapper {
+    position: relative;
+}
+  
+.card-index {
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}

@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import { CardActionArea, Card, CardActions, CardContent, CardMedia, Button, Typography, Icon, IconButton } from '@mui/material';
 import { mainColor, darkerMainColor, lighterMainColor, spotifyGreen } from '../common';
-import { ArtistPlayButton } from './MaterialComponentsCss';
 //import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';

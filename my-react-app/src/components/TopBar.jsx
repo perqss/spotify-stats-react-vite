@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { darkerMainColor, githubUrl, lighterMainColor, mainColor } from '../common';
+import { githubUrl } from '../common';
 import { spotifyGreen } from '../common';
 import { useNavigate, Link } from 'react-router-dom';
 import { getProfile } from '../clients/SpotifyClient';
-import { Icon } from '@mui/material';
 import styles from './TopBar.module.css';
 
 const TopBar = () => {
@@ -70,16 +69,15 @@ const TopBar = () => {
                     </a>
                 </div>}
             </div>}
-            <button 
+            <button
+                className="material-icons" 
                 style={{
                     backgroundColor: 'inherit'
                 }}
                 onClick={handleLogout} 
                 title="Log out"
             >
-                <Icon>
-                    logout
-                </Icon>
+                logout
             </button>
         </div>
     </header>

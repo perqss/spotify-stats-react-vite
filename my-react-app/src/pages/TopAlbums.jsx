@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getTopSongs } from '../clients/SpotifyClient';
 import AlbumCard from '../components/AlbumCard';
-import { LOAD_AT_ONCE_LIMIT, OFFSET, lighterMainColor } from '../common';
-import { getTopArtists } from '../clients/SpotifyClient';
-import ArtistCard from '../components/ArtistCard';
-import { Grid } from '@mui/material';
-//import { TailSpin } from 'react-loader-spinner';
-import BottomBar from '../components/BottomBar';
-import { SpotifyPlayButton } from '../components/MaterialComponentsCss';
-//import LoadMoreButton from '../components/LoadMoreButton';
+import { OFFSET } from '../common';
 
 const TopAlbums = (props) => {
   const [songsInfo, setSongsInfo] = useState();

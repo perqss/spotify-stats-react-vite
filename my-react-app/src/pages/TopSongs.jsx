@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getTopSongs } from '../clients/SpotifyClient';
-import Menu from '../components/Menu';
-import { OFFSET, lighterMainColor } from '../common';
-import { List, ListItem } from '@mui/material';
+import { OFFSET } from '../common';
 import Song from '../components/Song';
-//import { TailSpin } from 'react-loader-spinner';
-import BottomBar from '../components/BottomBar';
-import { LOAD_AT_ONCE_LIMIT } from '../common';
-//import LoadMoreButton from '../components/LoadMoreButton';
 
 
 const TopSongs = (props) => {
@@ -19,36 +13,34 @@ const TopSongs = (props) => {
   useEffect(() => {
     const getTopSongsWrapper = async () => {
       const response = await getTopSongs(props.songTerm);
-      response.items.splice(OFFSET, 1);
-      setLoadAtOnce(OFFSET);
       setSongsInfo(response.items);
     };
 
     getTopSongsWrapper();
   }, [props.songTerm])
 
-  useEffect(() => {
-    const getNextTopSongs = async () => {
-      if (loadAtOnce > OFFSET && songsInfo) {
-        let offsetTemp = offset;
-        let result = songsInfo;
-        let response;
-        while (offsetTemp < loadAtOnce) {
-          response = await getTopSongs(props.songTerm, offsetTemp);
-          result = result.concat(response.items);
-          offsetTemp += OFFSET;
-        }
-        setSongsInfo(result);
-      }
-    }
+  // useEffect(() => {
+  //   const getNextTopSongs = async () => {
+  //     if (loadAtOnce > OFFSET && songsInfo) {
+  //       let offsetTemp = offset;
+  //       let result = songsInfo;
+  //       let response;
+  //       while (offsetTemp < loadAtOnce) {
+  //         response = await getTopSongs(props.songTerm, offsetTemp);
+  //         result = result.concat(response.items);
+  //         offsetTemp += OFFSET;
+  //       }
+  //       setSongsInfo(result);
+  //     }
+  //   }
 
-    getNextTopSongs();
-  }, [loadAtOnce])
+  //   getNextTopSongs();
+  // }, [loadAtOnce])
 
-  const handleClickLoadMore = () => {
-    setLoadAtOnce(LOAD_AT_ONCE_LIMIT);
-    setOffset(OFFSET);
-  };
+  // const handleClickLoadMore = () => {
+  //   setLoadAtOnce(LOAD_AT_ONCE_LIMIT);
+  //   setOffset(OFFSET);
+  // };
 
   return (
     <div>

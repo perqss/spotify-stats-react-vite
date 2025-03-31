@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Avatar } from '@mui/material';
-import { getReleaseDateYear, grey, lighterMainColor, parseArtists, spotifyGreen } from '../common';
+import { getReleaseDateYear, grey, lighterMainColor, parseArtists } from '../common';
 import { getAlbum } from '../clients/SpotifyClient';
-//import { TailSpin } from 'react-loader-spinner';
-import { Button, Typography, Paper, IconButton, List } from '@mui/material';
-import { mainColor } from '../common';
-import { SpotifyPlayButton } from '../components/MaterialComponentsCss';
 import { useNavigate } from 'react-router-dom'; 
-//import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Song from '../components/Song';
 
 

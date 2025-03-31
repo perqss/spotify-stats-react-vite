@@ -1,10 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import { AppBar, Box, IconButton, Typography, Tooltip } from '@mui/material';
-import { darkerMainColor } from '../common';
-//import LogoutIcon from '@mui/icons-material/Logout';
-import { FaSpotify } from 'react-icons/fa';
-import { spotifyGreen } from '../common';
-//mport CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import React from 'react';
 
 const BottomBar = (props) => {
 
