@@ -6,9 +6,9 @@ import styles from './Menu.module.css'
 const Menu = ({componentIndex, setTerm}) => {
   const [selectedMenu, setSelectedMenu] = useState(componentIndex);
   const [selectedSubMenu, setSelectedSubMenu] = useState('All Time');
-  const menuItems = ['Top Artists', 'Top Songs', 'Top Albums', 'Recently Played', 'Music Taste'];
+  const menuItems = ['Top Artists', 'Top Songs', 'Top Albums', 'Recently Played', 'Music Taste', 'Followed Artists'];
   const subMenuItems = ['All Time', 'Last 6 Months', 'Last 4 Weeks'];
-  const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats'];
+  const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats', 'favorite_border'];
   const navigate = useNavigate();
 
   const handleClickMenuItem = (index) => {
@@ -35,6 +35,9 @@ const Menu = ({componentIndex, setTerm}) => {
             break;
         case 4:
             navigate('/music-taste');
+            break;
+        case 5:
+            navigate('/followed-artists');
             break;
         }
   }, [selectedMenu])
@@ -74,7 +77,7 @@ const Menu = ({componentIndex, setTerm}) => {
         {menuItems.map((item, index) => (
           <React.Fragment key={index}>
             <div
-              className={`${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
+              className={`menu-${index} ${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
               onClick={() => handleClickMenuItem(index)}
             >
               <span className={`material-icons ${styles["icon"]}`}>{menuIcons[index]}</span>

@@ -3,6 +3,56 @@ import { checkIfTokenHasExpired } from "../common";
 
 const LIMIT = 50;
 
+export const getFollowedArtists = async (term) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().getFollowedArtists({
+            limit: LIMIT
+        })
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+};
+
+export const isFollowingArtists = async (artistIds) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().isFollowingArtists(artistIds);
+    } catch (e) {
+        console.log(e);
+    }  
+
+    return response;
+};
+
+export const followArtists = async (artistIds) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().followArtists(artistIds);
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+}
+
+export const unfollowArtists = async (artistIds) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().unfollowArtists(artistIds);
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+};
+
 export const getTopArtists = async (term, offset = 0) => {
     await checkIfTokenHasExpired();
     let response;

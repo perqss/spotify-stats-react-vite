@@ -11,7 +11,9 @@ export const scopes = [
     'user-read-recently-played',
     'user-read-playback-state',
     'user-top-read',
-    'user-modify-playback-state'
+    'user-modify-playback-state',
+    'user-follow-read',
+    'user-follow-modify',
   ];
 export const clientId = 'd46089ad502a43888eb1a764ae0b8040';
 export const authEndPoint = 'https://accounts.spotify.com/authorize';

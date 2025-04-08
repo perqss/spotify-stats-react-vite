@@ -15,6 +15,7 @@ import ArtistProfile from './pages/ArtistProfile';
 import SongInfo from './pages/SongInfo';
 import TopAlbums from './pages/TopAlbums';
 import AlbumInfo from './pages/AlbumInfo';
+import FollowedArtists from './pages/FollowedArtists';
 
 export const AppContext = createContext();
 
@@ -131,6 +132,17 @@ function App() {
                 setAlbumTerm={setAlbumTerm}
               />
               <AlbumInfo/>
+            </div>
+          }
+        />
+        <Route
+          path='/followed-artists'
+          element={
+            <div>
+              <Menu
+                componentIndex={5}
+              />
+              <FollowedArtists/>
             </div>
           }
         />

@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { getTopArtists } from '../clients/SpotifyClient';
+import { getTopArtists, isFollowingArtists, followArtists, unfollowArtists } from '../clients/SpotifyClient';
 //import ArtistCard from '../components/ArtistCard';
 import ArtistCard from '../components/ArtistCardNoMUI';
-import styles from '../components/TopArtists.module.css';
 
-
-const TopArtists = (props) => {
+const TopArtists = ({ artistTerm }) => {
   const [artists, setArtists] = useState();
-  const [count, setCount] = useState(0);
+
+  const fetchTopArtists = async (term) => {
+    const response = await getTopArtists(term);
+    return response.items;
+  };
 
   useEffect(() => {
-    const getTopArtistsWrapper = async () => {
-      const response = await getTopArtists(props.artistTerm);
-      setArtists(response.items);
-    };
+        const fetchArtistsWrapper = async () => {
+            const topArtists = await fetchTopArtists(artistTerm);
+            const artistIds = topArtists.map((artist) => artist.id);
+            const followed = await isFollowingArtists(artistIds);
+            const newArtists = topArtists.map((artist, index) => {
+                return {
+                    ...artist,
+                    isFollowing: followed[index],
+                };
+            });
+            setArtists(newArtists);
+        };
 
-    getTopArtistsWrapper();
-  }, [props.artistTerm])
+        fetchArtistsWrapper();
+  }, [artistTerm])
 
   const assignId = (artists, index) => {
     if (artists.length - 1 === index) {
@@ -26,32 +36,32 @@ const TopArtists = (props) => {
     }
   };
 
-  const deleteFirstArtist = () => {
-    let newArtists = artists.slice(1);
-    setArtists(newArtists);
+  const handleClickFollowBtnParent = async (index) => {
+    if (!artists[index].isFollowing) {
+      await followArtists([artists[index].id]);
+    } else {
+      await unfollowArtists([artists[index].id]);
+    }
+    artists[index].isFollowing = !artists[index].isFollowing;
+    setArtists([...artists]);
   };
 
   return (
     <div>
       <div className='display-outer-container'>
         <div className='display-inner-container'>
-        <button
-          className="artist-delete-button"
-          onClick={deleteFirstArtist}
-        > 
-          Delete First
-        </button>
           <div className='grid-container'>
             {artists && artists.map((artist, index) => 
                 <div 
                   className='grid-item' 
                   key={artist.name}
                 >
-                  <div className={styles["card-wrapper"]}>
-                    <div className={styles["card-index"]}>{index + 1}</div>
+                  <div className='card-wrapper'>
+                    <div className='card-index'>{index + 1}</div>
                     <ArtistCard
                       className={assignId(artists, index)}
                       artistInfo={artist}
+                      handleClickFollowBtnParent={() => handleClickFollowBtnParent(index)}
                     />
                   </div>
                 </div>
@@ -60,7 +70,7 @@ const TopArtists = (props) => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default TopArtists;
