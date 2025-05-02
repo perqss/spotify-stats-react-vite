@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { githubUrl } from '../common';
 import { spotifyGreen } from '../common';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../clients/SpotifyClient';
 import styles from './TopBar.module.css';
 

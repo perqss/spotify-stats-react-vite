@@ -1,78 +1,102 @@
-import React, {useContext} from 'react';
-//import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import { useContext } from 'react';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
-import { grey, parseArtists } from '../common';
+import { grey, parseArtists, durationInHrMinSec } from '../common';
+import styles from './Song.module.css';
+import { saveTracks, removeSavedTracks } from '../clients/SpotifyClient';
+import { memo } from 'react';
 
-
-const Song = (props) => {
-  const setSongId = useContext(AppContext)?.setSongId;
-  const setArtistId = useContext(AppContext)?.setArtistId;
-  const setAlbumId = useContext(AppContext)?.setAlbumId;
-  const setOpenBottomBar = useContext(AppContext)?.setOpenBottomBar;
-  const navigate = useNavigate();
-
-  const durationInHrMinSec = (duration) => {
-    let milliseconds = Math.floor((duration % 1000) / 100),
-    seconds = Math.floor((duration / 1000) % 60),
-    minutes = Math.floor((duration / (1000 * 60)) % 60),
-    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-    hours = (hours < 10) ? '0' + hours : hours;
-    minutes = (minutes < 10) ? '0' + minutes : minutes;
-    seconds = (seconds < 10) ? '0' + seconds : seconds;
-
-    let result;
-    hours === '00' ? result = minutes + ':' + seconds : result = hours + ':' + minutes + ':' + seconds;
-    return result;
-  };
-
-  const handleClickPlayBtn = (event) => {
-    event.stopPropagation();
-    setSongId(props.songInfo.id);
-    setOpenBottomBar(true);
-    setArtistId(null);
-    setAlbumId(null);
-  }
-
-  const handleSecondary = () => {
-    if (props.albumInfo) {
-        return `${parseArtists(props.songInfo.artists)}`;
-    } else {
-        return `${parseArtists(props.songInfo.album.artists)} - ${props.songInfo.album.name}`;
+const Song = memo(({ className, songInfo, albumCover, handleClickSaveBtnParent }) => {
+    const context = useContext(AppContext);
+    const navigate = useNavigate();
+    console.log('song')
+    const handleSecondary = () => {
+        if (albumCover) {
+            return `${parseArtists(songInfo.artists)}`;
+        } else {
+            return `${parseArtists(songInfo.album.artists)} - ${songInfo.album.name}`;
+        }
     }
-  }
+
+    const handleClickPlayBtn = (e) => {
+      e.stopPropagation();
+      context.setArtistId(null);
+      context.setOpenBottomBar(true);
+      context.setSongId(songInfo.id);
+      context.setAlbumId(null);
+    };
+
+    const handleClickSaveBtn = async (event) => {
+        event.stopPropagation();
+        await handleClickSaveBtnParent(songInfo);
+        // switch (option) {
+        //     case 'saved':
+        //         await removeSavedTracks([songInfo.id]);
+        //         setSongs(prevSongs => prevSongs.filter(song => song.id !== songInfo.id));
+        //         break;
+        //     case 'top':
+        //         if (!songInfo.isSaved) {
+        //             await saveTracks([songInfo.id]);
+        //         } else {
+        //             await removeSavedTracks([songInfo.id]);
+        //         }
+
+        //         setSongs(prevSongs =>
+        //             prevSongs.map(song =>
+        //                 song.id === songInfo.id
+        //                     ? { ...song, isSaved: !song.isSaved }
+        //                     : song
+        //         ));
+
+        //         break;
+        // }
+    };
+
+    const handleSongClick = () => {
+        navigate(`/song/${songInfo.id}`);
+    };
   
   return (
-    <div>
-        <MenuItemButton
-            onClick={() => navigate(`/song/${props.songInfo.id}`)}
-        >
-            <ListItemAvatar>
-                <Avatar
-                    src={props.albumInfo ? props.albumInfo.images[1].url : props.songInfo.album.images[2].url}
+    <div className={className}>
+        <div className={styles["song-item"]} onClick={handleSongClick}>
+            <div className={styles["song-left"]}>
+                <img
+                    className={styles["song-graphic"]}
+                    src={albumCover ? albumCover : songInfo.album.images[2].url}
+                    alt="Cover art"
                 />
-            </ListItemAvatar>
-            <ListItemText
-                primary={`${props.index}. ${props.songInfo.name}`}
-                primaryTypographyProps={{color: 'white'}}
-                secondary={handleSecondary()}
-                secondaryTypographyProps={{color: grey}}
-            />
-            <SongPlayButton
-                onClick={handleClickPlayBtn}
-            >
-            </SongPlayButton>
-            <div
-                style={{
-                    color: 'white'
-                    }}
-                >
-                {durationInHrMinSec(props.songInfo.duration_ms)}
+                <div className={styles["song-text"]}>
+                    <div className={styles["primary-text"]}>{songInfo.name}</div>
+                    <div 
+                        className={styles["secondary-text"]} 
+                        style={{
+                            color: {grey}
+                        }}
+                    >
+                        {handleSecondary()}
+                    </div>
+                </div>
             </div>
-        </MenuItemButton>
+            <div className={styles["meta-controls"]}>
+                <button 
+                    className="material-icons"
+                    style={{backgroundColor: 'inherit', color: songInfo.isSaved ? 'yellow' : 'white'}}
+                    onClick={handleClickSaveBtn}
+                    title={songInfo.isSaved ? "Remove from Library" : "Add to Library"}
+                > 
+                    bookmark_add
+                </button>
+                <button 
+                    className={`material-icons ${styles["play-button"]}`}
+                    onClick={handleClickPlayBtn}
+                    title="Play"
+                >
+                    play_circle
+                </button>
+                <div className={styles["duration"]}>{durationInHrMinSec(songInfo.duration_ms)}</div>
+            </div>
+        </div>
     </div>
-  )
-};
+)});
 
 export default Song;

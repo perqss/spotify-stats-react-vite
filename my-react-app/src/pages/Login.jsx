@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../App.css';
 import logo from '../assets/react.svg';
-import  { spotifyGreen, getLoginUrl, getLocalAccessToken, getCodeFromUrl, getTokens, checkIfTokenHasExpired } from '../common';
+import  { getLoginUrl, getCodeFromUrl, getTokens } from '../common';
 import { useNavigate } from 'react-router-dom';
 import styles from '../components/Login.module.css'
 

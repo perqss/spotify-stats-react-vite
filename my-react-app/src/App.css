@@ -77,24 +77,9 @@ button:focus-visible {
   margin-left: 200px;
 }
 
-.cover-display {
-  width: 25vw;
-  height: 55vh;
-  margin-top: 80px;
-  margin-left: 120px;
-  border-radius: 0;
-}
-
 .card-media-img {
   background-image: var(--url);
   height: 200px;
-}
-
-.song-album-display {
-  display: flex;
-  flex-direction: column;
-  margin-left: 200px;
-  height: 100vh;
 }
 
 .grid-container {
@@ -124,4 +109,71 @@ button:focus-visible {
   border-radius: 4px;
   font-weight: bold;
   font-size: 0.9rem;
+}
+
+.song-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.artist-album-card {
+  background-color: #121212;
+  margin: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.artist-album-card:hover {
+  background-color: #1e1e1e;
+}
+
+.artist-album-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.artist-album-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.artist-album-name {
+  color: white;
+  font-size: 1rem;
+  margin: 0;
+  flex: 1;
+}
+
+.back-button {
+  position: absolute;
+  top: 70px;
+  left: 250px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+}
+
+.cover-display {
+  width: 25vw;
+  height: 55vh;
+  object-fit: cover;
+  border-radius: 8px;
+  display: flex;
+}
+
+.song-album-info {
+  margin-left: 20px;
+  color: white;
 }

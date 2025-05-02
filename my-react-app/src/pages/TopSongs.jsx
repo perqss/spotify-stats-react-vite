@@ -1,65 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { getTopSongs } from '../clients/SpotifyClient';
-import { OFFSET } from '../common';
+import { useState, useEffect, Fragment, useCallback } from 'react';
+import { getTopSongs, areTracksSaved, saveTracks, removeSavedTracks } from '../clients/SpotifyClient';
 import Song from '../components/Song';
+import { assignSongId } from '../common';
 
 
-const TopSongs = (props) => {
-  const [songsInfo, setSongsInfo] = useState();
-  const [songId, setSongId] = useState();
-  const [loadAtOnce, setLoadAtOnce] = useState(OFFSET);
-  const [offset, setOffset] = useState(0);
+const TopSongs = ({ songTerm }) => {
+  const [songs, setSongs] = useState(null);
+
+  const fetchTopSongs = async () => {
+    const response = await getTopSongs(songTerm);
+    return response.items;
+  };
 
   useEffect(() => {
-    const getTopSongsWrapper = async () => {
-      const response = await getTopSongs(props.songTerm);
-      setSongsInfo(response.items);
+    const fetchSongsWrapper = async () => {
+      const topSongs = await fetchTopSongs();
+      const songIds = topSongs.map((song) => song.id);
+      const saved = await areTracksSaved(songIds);
+      const newSongs = topSongs.map((song, index) => {
+        return {
+          ...song,
+          isSaved: saved[index],
+        };
+      });
+      setSongs(newSongs);
     };
 
-    getTopSongsWrapper();
-  }, [props.songTerm])
+    fetchSongsWrapper();
+  }, [songTerm])
 
-  // useEffect(() => {
-  //   const getNextTopSongs = async () => {
-  //     if (loadAtOnce > OFFSET && songsInfo) {
-  //       let offsetTemp = offset;
-  //       let result = songsInfo;
-  //       let response;
-  //       while (offsetTemp < loadAtOnce) {
-  //         response = await getTopSongs(props.songTerm, offsetTemp);
-  //         result = result.concat(response.items);
-  //         offsetTemp += OFFSET;
-  //       }
-  //       setSongsInfo(result);
-  //     }
-  //   }
-
-  //   getNextTopSongs();
-  // }, [loadAtOnce])
-
-  // const handleClickLoadMore = () => {
-  //   setLoadAtOnce(LOAD_AT_ONCE_LIMIT);
-  //   setOffset(OFFSET);
-  // };
+  const handleClickSaveBtnParent = useCallback(async (song) => {
+    if (!song.isSaved) {
+      await removeSavedTracks([song.id]);
+    } else {
+      await saveTracks([song.id]);
+    }
+    setSongs(prevSongs => 
+      prevSongs.map(s =>
+        s.id === song.id
+          ? { ...s, isSaved: !s.isSaved }
+          : s
+      )
+    )
+  }, []);
 
   return (
-    <div>
-      <div
-        className='display-outer-container'
-      >
-        <div
-          className='display-inner-container'
-        >
-          <List>
-            {songsInfo && songsInfo.map((songInfo, index) => 
-              <Song
-                key={index}
-                songInfo={songInfo}
-                index={index + 1}
-                length={songsInfo.length}
-              />
-            )}
-          </List>
+    <div className='display-outer-container'>
+      <div className='display-inner-container'>
+        <div className='song-container'>
+          {songs && songs.map((song, index) =>
+            <Fragment key={song.id}>
+                <div>{index + 1}.</div>
+                <Song
+                  className={assignSongId(songs, index)}
+                  songInfo={song}
+                  handleClickSaveBtnParent={handleClickSaveBtnParent}
+                />
+            </Fragment>
+          )}
         </div>
       </div>
     </div>

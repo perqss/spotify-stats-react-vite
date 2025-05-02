@@ -1,118 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { lighterMainColor } from '../common';
 import { getArtist } from '../clients/SpotifyClient';
-//mport { TailSpin } from 'react-loader-spinner';
-import { mainColor } from '../common';
 import { useNavigate } from 'react-router-dom';
-//import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import SpotifyPlayButton from '../components/SpotifyPlayButton';
+import styles from '../components/ArtistProfile.module.css';
 
 const ArtistProfile = () => {
   const { artistId } = useParams();
   const [artistInfo, setArtistInfo] = useState();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getArtistWrapper = async () => {
-        const response = await getArtist(artistId);
-        setArtistInfo(response);
-    };
+  const fetchArtist = async () => {
+    const response = await getArtist(artistId);
+    return response;
+  };
 
-    getArtistWrapper();
+  useEffect(() => {
+    fetchArtist().then(response => setArtistInfo(response));
   }, [])
   
   return (
-    <div style={{overflowX: 'hidden'}}>
-        <IconButton
-            sx={{
-                top: '70px',
-                left: '250px',
-            }}
-            onClick={() => navigate(-1)}
+    <Fragment>
+        <button
+            className="material-icons back-button"
+            onClick={() => navigate(-1)} 
         >
-            {/* <ArrowBackIosNewIcon
-                sx={{
-                    color: 'white'
-                }}
-            /> */}
-        </IconButton>
-        {artistInfo && 
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginLeft: '200px',
-                height: '100vh',
-                backgroundColor: lighterMainColor,
-            }}
-        >
-            <Avatar
-                sx={{
-                    width: '25vw',
-                    height: '55vh',
-                    marginTop: '60px',
-                }}
-                src={artistInfo.images[0].url}
-            />
-
-            <Paper
-                sx={{
-                    backgroundColor: mainColor,
-                    padding: '10px',
-                    margin: '10px'
-                }}
-            >
-                <Typography
-                    gutterBottom
-                    variant='h6'
-                    color='white'
-                >
-                    {artistInfo.followers.total} followers
-                </Typography>
-            </Paper>
+            arrow_back_ios
+        </button>
+        {
+            artistInfo && 
             <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                }}
+                className={styles["artist-profile-display"]}
             >
-                {artistInfo.genres.map((genre, index) =>
-                    <Paper
-                        key={index}
-                        sx={{
-                            margin: '10px',
-                            backgroundColor: mainColor,
-                            padding: '10px'
-                        }}
-                    >
-                        <Typography
-                            gutterBottom
-                            variant='h6'
-                            color='white'
-                        >
-                            {genre}
-                        </Typography>
-                    </Paper>
-                )}
+                <img
+                    src={artistInfo.images[0].url}
+                    alt="Artist Cover"
+                    className={styles["artist-image"]}
+                />
+                <div className={styles["info-card"]}>
+                    <div className={styles["info-text"]}>
+                        {artistInfo.followers.total} followers
+                    </div>
+                </div>
+                <div className={styles["genres-container"]}>
+                    {artistInfo.genres.map(genre => 
+                        <div className={styles["info-card"]} key={genre}>
+                            <div className={styles["info-text"]}>
+                                {genre}
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <SpotifyPlayButton 
+                    href={artistInfo.external_urls.spotify} 
+                    target="_blank"
+                    text="Play on Spotify"
+                />
             </div>
-            <SpotifyPlayButton
-                href={artistInfo.external_urls.spotify}
-                variant='contained'
-                sx={{
-                    margin: '10px'
-                }}
-                target='_BLANK'
-            >
-                <Typography
-                    variant='h6'
-                >
-                    Play on Spotify
-                </Typography>
-            </SpotifyPlayButton>
-        </div>}
-    </div>
+        }
+    </Fragment>
   )
 };
 

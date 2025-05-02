@@ -3,6 +3,56 @@ import { checkIfTokenHasExpired } from "../common";
 
 const LIMIT = 50;
 
+export const areTracksSaved = async (trackIds) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().containsMySavedTracks(trackIds);
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+};
+
+export const getSavedTracks = async () => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().getMySavedTracks({
+            limit: LIMIT,
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+};
+
+export const saveTracks = async (trackIds) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().addToMySavedTracks({ ids: trackIds });
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+};
+
+export const removeSavedTracks = async (trackIds) => {
+    await checkIfTokenHasExpired();
+    let response;
+    try {
+        response = await spotify().removeFromMySavedTracks({ ids: trackIds });
+    } catch (e) {
+        console.log(e);
+    }
+
+    return response;
+};
+
 export const getFollowedArtists = async (term) => {
     await checkIfTokenHasExpired();
     let response;

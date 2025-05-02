@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import TopBar from './TopBar';
 import { useNavigate } from 'react-router-dom';
 import styles from './Menu.module.css'
@@ -6,9 +6,9 @@ import styles from './Menu.module.css'
 const Menu = ({componentIndex, setTerm}) => {
   const [selectedMenu, setSelectedMenu] = useState(componentIndex);
   const [selectedSubMenu, setSelectedSubMenu] = useState('All Time');
-  const menuItems = ['Top Artists', 'Top Songs', 'Top Albums', 'Recently Played', 'Music Taste', 'Followed Artists'];
+  const menuItems = ['Top Artists', 'Top Songs', 'Top Albums', 'Recently Played', 'Music Taste', 'Followed Artists', 'Saved Songs'];
   const subMenuItems = ['All Time', 'Last 6 Months', 'Last 4 Weeks'];
-  const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats', 'favorite_border'];
+  const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats', 'favorite_border', 'bookmarks'];
   const navigate = useNavigate();
 
   const handleClickMenuItem = (index) => {
@@ -38,6 +38,9 @@ const Menu = ({componentIndex, setTerm}) => {
             break;
         case 5:
             navigate('/followed-artists');
+            break;
+        case 6:
+            navigate('/saved-songs');
             break;
         }
   }, [selectedMenu])
@@ -75,7 +78,7 @@ const Menu = ({componentIndex, setTerm}) => {
       <TopBar />
       <aside className={styles["sidebar"]}>
         {menuItems.map((item, index) => (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             <div
               className={`menu-${index} ${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
               onClick={() => handleClickMenuItem(index)}
@@ -97,7 +100,7 @@ const Menu = ({componentIndex, setTerm}) => {
                 ))}
               </div>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </aside>
     </div>

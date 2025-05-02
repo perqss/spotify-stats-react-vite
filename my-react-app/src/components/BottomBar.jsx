@@ -1,47 +1,47 @@
-import React from 'react';
-
-const BottomBar = (props) => {
-
+const BottomBar = ({ songId, artistId, albumId, open, setOpen }) => {
   const chooseSrc = () => {
-    if (props.songId) {
-        return `https://open.spotify.com/embed/track/${props.songId}?utm_source=generator`;
-    } else if (props.artistId) {
-        return `https://open.spotify.com/embed/artist/${props.artistId}?utm_source=generator`;
-    } else if (props.albumId) {
-        return `https://open.spotify.com/embed/album/${props.albumId}?utm_source=generator`;
+    console.log('choosesrc')
+    if (songId) {
+        return `https://open.spotify.com/embed/track/${songId}?utm_source=generator`;
+    } else if (artistId) {
+        return `https://open.spotify.com/embed/artist/${artistId}?utm_source=generator`;
+    } else if (albumId) {
+        return `https://open.spotify.com/embed/album/${albumId}?utm_source=generator`;
     }
     return '';
   };
 
   return (
     <div>
-        {props.open && <div style={{marginTop: '70px'}}>
+        {open && <div style={{marginTop: '100px'}}>
             <iframe
                 style={{
                     position: 'fixed',
                     width: '100%',
                     borderRadius: '12px',
-                    bottom: -70,
+                    bottom: '-70px',
                 }}
                 src={chooseSrc()}
                 frameBorder="0" 
                 allowFullScreen="" 
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                 loading="lazy"
+                title="Spotify Player"
             ></iframe>
-            <IconButton 
-                sx={{
-                    bottom: 70,
-                    marginBottom: 1, 
-                    marginRight: 'auto', 
-                    position: 'fixed'
+            <button 
+                style={{
+                    bottom: '70px',
+                    left: '0px',
+                    padding: '10px',
+                    position: 'fixed',
+                    border: 'none',
+                    backgroundColor: 'inherit',
                 }}
-                onClick={() => props.setOpen(false)}
+                onClick={() => setOpen(false)}
+                className="material-icons"
             >
-                <CancelOutlinedIcon 
-                    sx={{color: 'white'}}
-                />
-            </IconButton>
+                cancel
+            </button>
         </div>}
     </div>
   )

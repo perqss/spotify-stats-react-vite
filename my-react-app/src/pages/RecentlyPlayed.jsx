@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getRecentlyPlayed } from '../clients/SpotifyClient';
 import Song from '../components/Song';
 //import { TailSpin } from 'react-loader-spinner';

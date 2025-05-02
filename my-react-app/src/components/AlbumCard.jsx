@@ -1,55 +1,43 @@
-import React, { useContext } from 'react';
-import { mainColor, darkerMainColor, lighterMainColor, spotifyGreen } from '../common';
-//import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import { useContext } from 'react';
+import { mainColor } from '../common';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 
-const AlbumCard = (props) => {
-    const setSongId = useContext(AppContext)?.setSongId;
-    const setArtistId = useContext(AppContext)?.setArtistId;
-    const setAlbumId = useContext(AppContext)?.setAlbumId;
-    const setOpenBottomBar = useContext(AppContext)?.setOpenBottomBar;
+const AlbumCard = ({ album }) => {
+    const context = useContext(AppContext);
     const navigate = useNavigate();
+
+    const handleClickAlbum = () => {
+      navigate(`/album/${album[1].id}`);
+    };
 
     const handleClickPlayBtn = (event) => {
         event.stopPropagation();
-        setAlbumId(props.album[1].id);
-        setOpenBottomBar(true);
-        setSongId(null);
-        setArtistId(null);
+        context.setAlbumId(album[1].id);
+        context.setOpenBottomBar(true);
+        context.setSongId(null);
+        context.setArtistId(null);
     };
 
-    const handleClickAlbum = () => {
-      navigate(`/album/${props.album[1].id}`);
-    }
-
     return (
-        <Card sx={{backgroundColor: mainColor, margin: 1}}>
-          <CardActionArea
-            onClick={handleClickAlbum}
-          >
-            <CardMedia
-              sx={{ height: '200px'}}
-              image={props.album[1].image}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h7" color='white'>
-                {`${props.index}. ${props.album[0]}`}
-              </Typography>
-            </CardContent>
-            <CardActions
-              disableSpacing
+        <div className="artist-album-card" onClick={handleClickAlbum}>
+          <img className="artist-album-image" src={album[1].image} alt={album[0]} />
+          <div className="artist-album-info">
+              <p className="artist-album-name">{`${album[0]}`}</p>
+          </div>
+          <div>
+            <button 
+              className="material-icons" 
+              style={{
+                backgroundColor: 'inherit'
+              }} 
+              onClick={handleClickPlayBtn} 
+              title="Play"
             >
-            </CardActions>
-          </CardActionArea>
-          <ArtistPlayButton
-            onClick={handleClickPlayBtn}
-          >
-            <PlayCircleFilledWhiteOutlinedIcon 
-              sx={{color: 'white'}}
-            />
-          </ArtistPlayButton>
-        </Card>
+              play_circle
+            </button>
+          </div>
+        </div>
       );
 };
 

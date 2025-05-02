@@ -14,6 +14,8 @@ export const scopes = [
     'user-modify-playback-state',
     'user-follow-read',
     'user-follow-modify',
+    'user-library-read',
+    'user-library-modify',
   ];
 export const clientId = 'd46089ad502a43888eb1a764ae0b8040';
 export const authEndPoint = 'https://accounts.spotify.com/authorize';
@@ -22,6 +24,21 @@ import.meta.env.DEV ? frontendUrl = 'http://127.0.0.1:3000/' : frontendUrl = 'ht
 export const LOAD_AT_ONCE_LIMIT = 99;
 export const OFFSET = 49;
 export const githubUrl = 'https://github.com/perqss/spotify-stats-app';
+
+export const durationInHrMinSec = (duration) => {
+    let milliseconds = Math.floor((duration % 1000) / 100),
+    seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+    hours = (hours < 10) ? '0' + hours : hours;
+    minutes = (minutes < 10) ? '0' + minutes : minutes;
+    seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+    let result;
+    hours === '00' ? result = minutes + ':' + seconds : result = hours + ':' + minutes + ':' + seconds;
+    return result;
+};
 
 export const getTokenFromUrl = () => {
     return window.location.hash
@@ -38,6 +55,22 @@ export const getTokenFromUrl = () => {
 export const parseArtists = (artistsInfo) => {
     const artists = artistsInfo.map(artistInfo => artistInfo.name);
     return artists.join(', ');
+};
+
+export const assignArtistId = (artists, index) => {
+    if (artists.length - 1 === index) {
+        return "last-artist";
+    } else if (index === 0) {
+        return "first-artist";
+    }
+};
+
+export const assignSongId = (songs, index) => {
+    if (songs.length - 1 === index) {
+        return "last-song";
+    } else if (index === 0) {
+        return "first-song";
+    }
 };
 
 export const getReleaseDateYear = (releaseDate) => {

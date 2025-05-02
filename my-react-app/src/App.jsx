@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import { useState, createContext } from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -16,6 +16,7 @@ import SongInfo from './pages/SongInfo';
 import TopAlbums from './pages/TopAlbums';
 import AlbumInfo from './pages/AlbumInfo';
 import FollowedArtists from './pages/FollowedArtists';
+import SavedSongs from './pages/SavedSongs';
 
 export const AppContext = createContext();
 
@@ -113,17 +114,6 @@ function App() {
             </div>
           }
         />
-        {/* <Route
-          path='/music-taste'
-          element={
-            <div>
-              <Menu
-                componentIndex={4}
-              />
-              <MusicTaste/>
-            </div>
-          }
-        /> */}
         <Route
           path='/album/:albumId'
           element={
@@ -143,6 +133,17 @@ function App() {
                 componentIndex={5}
               />
               <FollowedArtists/>
+            </div>
+          }
+        />
+        <Route 
+          path='/saved-songs'
+          element={
+            <div>
+              <Menu
+                componentIndex={6}
+              />
+              <SavedSongs/>
             </div>
           }
         />

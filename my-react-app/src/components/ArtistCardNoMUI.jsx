@@ -1,23 +1,20 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import { spotifyGreen } from '../common';
 import styles from './Artist.module.css';
+import { unfollowArtists, followArtists } from '../clients/SpotifyClient';
 
-const ArtistCard = React.memo(({ className, artistInfo, handleClickFollowBtnParent }) => {
-  const setArtistId = useContext(AppContext)?.setArtistId;
-  const setSongId = useContext(AppContext)?.setSongId;
-  const setAlbumId = useContext(AppContext)?.setAlbumId;
-  const setOpenBottomBar = useContext(AppContext)?.setOpenBottomBar;
+const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) => {
+  const context = useContext(AppContext);
   const navigate = useNavigate();
-  console.log('render')
-
+  console.log('artist card re render')
   const handleClickPlayBtn = (e) => {
     e.stopPropagation();
-    setArtistId(props.artistInfo?.id);
-    setOpenBottomBar(true);
-    setSongId(null);
-    setAlbumId(null);
+    context.setArtistId(artistInfo.id);
+    context.setOpenBottomBar(true);
+    context.setSongId(null);
+    context.setAlbumId(null);
   };
 
   const handleClickArtist = () => {
@@ -26,8 +23,29 @@ const ArtistCard = React.memo(({ className, artistInfo, handleClickFollowBtnPare
 
   const handleClickFollowBtn = async (event) => {
     event.stopPropagation();
-    await handleClickFollowBtnParent();
-  }
+    await handleClickFollowBtnParent(artistInfo);
+    // switch (option) {
+    //   case 'followed':
+    //     await unfollowArtists([artistInfo.id]);
+    //     setArtists(prevArtists => prevArtists.filter(artist => artist.id !== artistInfo.id));
+    //     break;
+    //   case 'top':
+    //     if (!artistInfo.isFollowing) {
+    //       await followArtists([artistInfo.id]);
+    //     } else {
+    //       await unfollowArtists([artistInfo.id]);
+    //     }
+
+    //     setArtists(prevArtists =>
+    //       prevArtists.map(artist =>
+    //         artist.id === artistInfo.id
+    //           ? { ...artist, isFollowing: !artist.isFollowing }
+    //           : artist
+    //       ));
+          
+    //     break;
+    // }
+  };
 
   return (
     <div className={className}>

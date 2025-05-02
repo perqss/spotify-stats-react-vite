@@ -1,136 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { lighterMainColor } from '../common';
-import { parseArtists } from '../common';
-import { grey, getReleaseDateYear } from '../common';
-import { getTrackAudioFeatures, getTrackAudioAnalysis, getTrack } from '../clients/SpotifyClient';
-import { useNavigate, useParams } from 'react-router-dom';
-
+import { useEffect, useState, Fragment } from 'react';
+import { getReleaseDateYear, parseArtists } from '../common';
+import { getTrack } from '../clients/SpotifyClient';
+import { useParams, useNavigate } from 'react-router-dom';
+import SpotifyPlayButton from '../components/SpotifyPlayButton';
+import styles from '../components/SongInfo.module.css';
 
 const SongInfo = () => {
   const { songId } = useParams();
   const [songInfo, setSongInfo] = useState();
-  const [audioFeatures, setAudioFeatures] = useState();
-  const [audioAnalysis, setAudioAnalysis] = useState();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getTrackAudioFeaturesWrapper = async () => {
-      const response = await getTrackAudioFeatures(songId);
-      setAudioFeatures(response);
-    };
-
-    getTrackAudioFeaturesWrapper();
-  }, [])
+  const fetchSong = async () => {
+    const response = await getTrack(songId);
+    return response;
+  };
 
   useEffect(() => {
-    const getTrackAudioAnalysisWrapper = async () => {
-      const response = await getTrackAudioAnalysis(songId);
-      setAudioAnalysis(response);
-    };
-
-    getTrackAudioAnalysisWrapper();
-  }, [])
-
-  useEffect(() => {
-    const getTrackWrapper = async () => {
-      const response = await getTrack(songId);
-      setSongInfo(response);
-    }
-
-    getTrackWrapper();
+    fetchSong().then(response => setSongInfo(response));
   }, [])
   
   return (
-    <div style={{overflowX: 'hidden'}}>
-        <IconButton
-            sx={{
-                top: '70px',
-                left: '250px',
-            }}
-            onClick={() => navigate(-1)}
-        >
-            <ArrowBackIosNewIcon
-                sx={{
-                    color: 'white'
-                }}
-            />
-        </IconButton>
-      {songInfo &&
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                marginLeft: '200px',
-                height: '100%',
-                backgroundColor: lighterMainColor,
-            }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row'
-            }}
-          > 
-            <Avatar
-                sx={{
-                    width: '25vw',
-                    height: '55vh',
-                    marginTop: '80px',
-                    marginLeft: '120px',
-                    borderRadius: 0,
-                }}
-                src={songInfo.album.images[0].url}
-            />
-            <div
-              style={{
-                marginLeft: '2vw'
-              }}
-            >
-                <Typography
-                    variant='h4'
-                    color='white'
-                    sx={{
-                      marginTop: '80px',
-                    }}
-                >
-                    {songInfo.name}
-                </Typography>
-                <Typography
-                    variant='h5'
-                    color={grey}
-                >
-                    {songInfo.album.name}
-                </Typography>
-                <Typography
-                    variant='h6'
-                    color={grey}
-                >
-                    {parseArtists(songInfo.artists)}
-                </Typography>
-                <Typography
-                    variant='h6'
-                    color={grey}
-                >
-                    {getReleaseDateYear(songInfo.album.release_date)}
-                </Typography>
-                <SpotifyPlayButton
-                    href={songInfo.external_urls.spotify}
-                    variant='contained'
-                    target='_BLANK'
-                    sx={{
-                      marginTop: '10px'
-                    }}
-                >
-                <Typography
-                    variant='h6'
-                >
-                    Play on Spotify
-                </Typography>
-                </SpotifyPlayButton>
+    <Fragment>
+      <button
+        className="material-icons back-button"
+        onClick={() => navigate(-1)}
+      >
+        arrow_back_ios
+      </button>
+      {
+        songInfo && 
+        <div className={styles["song-display"]}>
+          <div className={styles["song-content-row"]}>
+              <img 
+                  className="cover-display"
+                  src={songInfo.album.images[0].url}
+                  alt="Album cover"
+              />
+              <div className={styles["song-details"]}>
+                  <div className={styles["song-name"]}>
+                      {songInfo.name}
+                  </div>
+                  <div className={styles["album-name"]}>
+                      {songInfo.album.name}
+                  </div>
+                  <div className={styles["artist-names"]}>
+                      {parseArtists(songInfo.artists)}
+                  </div>
+                  <div className={styles["release-year"]}>
+                      {getReleaseDateYear(songInfo.album.release_date)}
+                  </div>
+                  <SpotifyPlayButton 
+                      text="Play on Spotify"
+                      href={songInfo.external_urls.spotify}
+                      target="_BLANK"
+                  />
               </div>
           </div>
-        </div>}
-    </div>
+      </div>
+      }
+    </Fragment>
   )
 };
 

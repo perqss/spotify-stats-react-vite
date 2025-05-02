@@ -1,29 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getTopSongs } from '../clients/SpotifyClient';
 import AlbumCard from '../components/AlbumCard';
 import { OFFSET } from '../common';
 
-const TopAlbums = (props) => {
-  const [songsInfo, setSongsInfo] = useState();
-  const [albums, setAlbums] = useState();
-  const [songId, setSongId] = useState();
-  const [offset, setOffset] = useState(0);
+const TopAlbums = ({ albumTerm }) => {
+  const [songsInfo, setSongsInfo] = useState(null);
+  const [albums, setAlbums] = useState(null);
+
+  const fetchTopSongs = async () => {
+    const response = await getTopSongs(albumTerm);
+    return response.items;
+  };
 
   useEffect(() => {
-    const getTopSongsWrapper = async () => {
-      let offsetTemp = offset;
-      let response = await getTopSongs(props.albumTerm);
-      let result = [];
-      result = result.concat(response.items);
-      response = await getTopSongs(props.albumTerm, OFFSET);
-      result = result.concat(response.items);
-      result.splice(OFFSET, 1);
-      setSongsInfo(result);
-    };
+    fetchTopSongs().then((response) => (setSongsInfo(response)));
+  }, [albumTerm])
 
-    getTopSongsWrapper();
-  }, [props.albumTerm])
-  
   useEffect(() => {
     if (songsInfo) {
         let result = {}
@@ -58,22 +50,21 @@ const TopAlbums = (props) => {
   
   return (
     <div>
-      <div 
-        className='display-outer-container'
-      >
-        <div 
-          className='display-inner-container'
-        >
-          <Grid container spacing={1}>
+      <div className='display-outer-container'>
+        <div className='display-inner-container'>
+          <div className='grid-container'>
             {albums && albums.map((album, index) => 
-              <Grid item key={index} xs={12} sm={6} md={2}>
-                <AlbumCard
-                    album={album}
-                    index={index + 1}
-                />
-              </Grid>
+                <div 
+                  className='grid-item' 
+                  key={album[1].id}
+                >
+                  <div className='card-wrapper'>
+                    <div className='card-index'>{index + 1}</div>
+                    <AlbumCard album={album}/>
+                  </div>
+                </div>
             )}
-          </Grid>
+          </div>
         </div>
       </div>
     </div>

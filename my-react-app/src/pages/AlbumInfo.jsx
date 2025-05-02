@@ -1,141 +1,123 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getReleaseDateYear, grey, lighterMainColor, parseArtists } from '../common';
-import { getAlbum } from '../clients/SpotifyClient';
-import { useNavigate } from 'react-router-dom'; 
+import { getReleaseDateYear, parseArtists } from '../common';
+import { getAlbum, areTracksSaved, saveTracks, removeSavedTracks } from '../clients/SpotifyClient';
+import { useNavigate, useParams } from 'react-router-dom'; 
 import Song from '../components/Song';
-
+import SpotifyPlayButton from '../components/SpotifyPlayButton';
+import styles from '../components/AlbumInfo.module.css';
+import { Fragment, useState, useEffect, useCallback } from 'react';
 
 const AlbumInfo = () => {
   const navigate = useNavigate();
   const { albumId } = useParams();
   const [albumInfo, setAlbumInfo] = useState();
 
-  useEffect(() => {
-    const getAlbumWrapper = async () => {
-      const response = await getAlbum(albumId);
-      setAlbumInfo(response);
-    }
+  const fetchAlbum = async () => {
+    const response = await getAlbum(albumId);
+    return response;
+  };
 
-    getAlbumWrapper();
+  useEffect(() => {
+    const fetchAlbumWrapper = async () => {
+      const album = await fetchAlbum();
+      const songIds = album.tracks.items.map(track => track.id);
+      const saved = await areTracksSaved(songIds);
+      const newAlbumInfo = {
+        ...album,
+        tracks: {
+          ...album.tracks,
+          items: album.tracks.items.map((track, index) => ({
+            ...track,
+            isSaved: saved[index],
+          })),
+        }
+      };
+
+      setAlbumInfo(newAlbumInfo);
+    };
+
+    fetchAlbumWrapper();
   }, [])
 
+  const handleClickSaveBtnParent = useCallback(async (song) => {
+    if (!song.isSaved) {
+      await saveTracks([song.id]);
+    } else {
+      await removeSavedTracks([song.id]);
+    }
+    setAlbumInfo(prevAlbum => ({
+      ...prevAlbum,
+      tracks: {
+        ...prevAlbum.tracks,
+        items: prevAlbum.tracks.items.map(track =>
+          track.id === song.id
+            ? { ...track, isSaved: !track.isSaved }
+            : track
+        ),
+      },
+    }));
+  }, []);
+
   return (
-    <div style={{overflowX: 'hidden'}}>
-      <IconButton
-        sx={{
-              top: '70px',
-              left: '250px',
-          }}
-        onClick={() => navigate(-1)}
+    <Fragment>
+      <button 
+          className="back-button material-icons" 
+          onClick={() => navigate(-1)}
       >
-        <ArrowBackIosNewIcon
-          sx={{
-              color: 'white'
-          }}
-        />
-      </IconButton>
-      {albumInfo && <div
-       style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginLeft: '200px',
-          height: '100%',
-          backgroundColor: lighterMainColor,
-      }}
-      >
-        <div
-          style={{display: 'flex'}}
-        >
-          <Avatar
-            sx={{
-              width: '25vw',
-              height: '55vh',
-              marginTop: '80px',
-              borderRadius: 0,
-              marginLeft: '120px',
-            }}
-            src={albumInfo.images[1].url}
-          />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              marginLeft: '20px',
-            }}
-          >
-            <Typography
-              variant='h4'
-              color='white'
-              sx={{
-                marginTop: '80px'
-              }}
-            >
-              {albumInfo.name}
-            </Typography>
-            <Typography
-              variant='h5'
-              color={grey}
-            >
-              {parseArtists(albumInfo.artists)}
-            </Typography>
-            <Typography
-              variant='h6'
-              color={grey}
-            >
-              {albumInfo.label}
-            </Typography>
-            <Typography
-              variant='h6'
-              color={grey}
-            >
-              {getReleaseDateYear(albumInfo.release_date)}
-            </Typography>
-            {albumInfo.genres.map((genre, index) =>
-              <Typography
-                key={index}
-                variant='h6'
-                color={grey}
-              >
-                {genre}
-              </Typography>
-            )}
-            <SpotifyPlayButton
-                    href={albumInfo.external_urls.spotify}
-                    variant='contained'
-                    target='_BLANK'
-                    sx={{
-                      marginTop: '10px'
-                    }}
-                >
-                <Typography
-                    variant='h6'
-                >
-                    Play on Spotify
-                </Typography>
-            </SpotifyPlayButton>
-          </div>
+          arrow_back_ios
+      </button>
+      {
+        albumInfo && 
+          <div className={styles["album-display"]}>
+            <div className={styles["album-header"]}>
+                <img 
+                    className="cover-display"
+                    src={albumInfo.images[1].url}
+                    alt="Album Cover"
+                />
+
+                <div className="song-album-info">
+                    <div className={styles["album-title"]}>
+                        {albumInfo.name}
+                    </div>
+                    <div className={styles["album-artist"]}>
+                        {parseArtists(albumInfo.artists)}
+                    </div>
+                    <div className={styles["album-label"]}>
+                        {albumInfo.label}
+                    </div>
+                    {albumInfo.genres.map(genre => 
+                        <div className={styles["album-genre"]} key={genre}>
+                          {genre}
+                        </div>
+                    )}
+                    <div className={styles["album-year"]}>
+                        {getReleaseDateYear(albumInfo.release_date)}
+                    </div>
+                    <SpotifyPlayButton
+                        text="Play on Spotify"
+                        href={albumInfo.external_urls.spotify}
+                        target="_blank"
+                    />
+                </div>
+            </div>
+            <div className={styles["tracks-header"]}>
+                Album tracks
+            </div>
+            <div className={styles["tracks-list"]}>
+                  {albumInfo.tracks.items.map((song, index) =>
+                  <Fragment key={song.id}>
+                    <div>{index + 1}.</div>
+                    <Song
+                      albumCover={albumInfo.images[1].url}
+                      songInfo={song}
+                      handleClickSaveBtnParent={handleClickSaveBtnParent}
+                    />
+                  </Fragment>
+                  )}
+            </div>
         </div>
-        <Typography
-            variant='h5'
-            color='white'
-            sx={{margin: 3}}
-          >
-            Album tracks
-        </Typography>
-        <List>
-          {albumInfo.tracks.items.map((song, index) => 
-            <Song
-              key={index}
-              songInfo={song}
-              index={index + 1}
-              length={albumInfo.tracks.items.length}
-              albumInfo={albumInfo}
-            />
-          )}
-        </List>
-      </div>}
-    </div>
+      }
+    </Fragment>
   );
 }
 
