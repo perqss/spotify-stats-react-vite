@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getArtist } from '../clients/SpotifyClient';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const ArtistProfile = () => {
   }, [])
   
   return (
-    <Fragment>
+    <>
         <button
             className="material-icons back-button"
             onClick={() => navigate(-1)} 
@@ -58,7 +58,7 @@ const ArtistProfile = () => {
                 />
             </div>
         }
-    </Fragment>
+    </>
   )
 };
 

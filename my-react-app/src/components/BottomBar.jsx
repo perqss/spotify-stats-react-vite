@@ -1,6 +1,5 @@
 const BottomBar = ({ songId, artistId, albumId, open, setOpen }) => {
   const chooseSrc = () => {
-    console.log('choosesrc')
     if (songId) {
         return `https://open.spotify.com/embed/track/${songId}?utm_source=generator`;
     } else if (artistId) {

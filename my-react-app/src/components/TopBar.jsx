@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { githubUrl } from '../common';
-import { spotifyGreen } from '../common';
+import { spotifyGreen, githubUrl } from '../common';
 import { useNavigate } from 'react-router-dom';
 import { getProfile } from '../clients/SpotifyClient';
 import styles from './TopBar.module.css';
@@ -9,7 +8,7 @@ const TopBar = () => {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
-
+    console.log('top bar')
   useEffect(() => {
     const getProfileWrapper = async () => {
         const response = await getProfile();
@@ -28,7 +27,7 @@ const TopBar = () => {
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
-  }
+  };
 
   return (
     <header className={styles["top-bar"]}>
@@ -81,7 +80,7 @@ const TopBar = () => {
             </button>
         </div>
     </header>
-  )
+  );
 }
 
 export default TopBar;

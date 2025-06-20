@@ -1,14 +1,12 @@
-import { useContext, memo } from 'react';
+import { useContext, memo, useEffect } from 'react';
 import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import { spotifyGreen } from '../common';
-import styles from './Artist.module.css';
-import { unfollowArtists, followArtists } from '../clients/SpotifyClient';
 
-const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) => {
+const ArtistCard = ({ className, artistInfo, handleClickFollowBtnParent }) => {
   const context = useContext(AppContext);
   const navigate = useNavigate();
-  console.log('artist card re render')
+
   const handleClickPlayBtn = (e) => {
     e.stopPropagation();
     context.setArtistId(artistInfo.id);
@@ -48,18 +46,18 @@ const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) 
   };
 
   return (
-    <div className={className}>
-        <div className={styles["artist-card"]} onClick={handleClickArtist}>
-            <img className={styles["artist-image"]} src={artistInfo.images[0].url} alt={artistInfo.name} />
-            <div className={styles["artist-info"]}>
-                <p className={styles["artist-name"]}>{`${artistInfo.name}`}</p>
+    <div className={`${className} artist-card`}>
+        <div className="artist-album-card" onClick={handleClickArtist}>
+            <img className="artist-album-image" src={artistInfo.images[0].url} alt={artistInfo.name} />
+            <div className="artist-album-info">
+                <p className="artist-album-name">{`${artistInfo.name}`}</p>
             </div>
             <div>
               <button 
-                    style={{backgroundColor: 'inherit'}} 
-                    className="material-icons" 
-                    onClick={handleClickPlayBtn}
-                    title="Play"
+                  style={{backgroundColor: 'inherit'}} 
+                  className="material-icons" 
+                  onClick={handleClickPlayBtn}
+                  title="Play"
                 >
                     play_circle
                 </button>
@@ -75,6 +73,6 @@ const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) 
         </div>
     </div>
   );
-});
+};
 
 export default ArtistCard;

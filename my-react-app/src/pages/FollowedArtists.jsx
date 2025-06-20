@@ -29,13 +29,19 @@ const FollowedArtists = () => {
         fetchArtistsWrapper();
     }, [])
 
-    const handleClickFollowBtnParent = useCallback(async (artist) => {
+    // const handleClickFollowBtnParent = useCallback(async (artist) => {
+    //   await unfollowArtists([artist.id]);
+    //   setArtists(prevArtists => 
+    //     prevArtists.filter(tempArtist => tempArtist.id !== artist.id)
+    //   )
+    // }, []);
+
+    const handleClickFollowBtnParent = async (artist) => {
       await unfollowArtists([artist.id]);
       setArtists(prevArtists => 
         prevArtists.filter(tempArtist => tempArtist.id !== artist.id)
       )
-    }, [])
-
+    };
     // useCallback does not limit the renders in this case if passed to ArtistCard
     // const handleClickFollowBtnParent = useCallback(
     //     async (index) => {
@@ -55,7 +61,7 @@ const FollowedArtists = () => {
                 {artists && artists.map((artist, index) => 
                     <div 
                       className='grid-item' 
-                      key={artist.name}
+                      key={artist.id}
                     >
                       <div className='card-wrapper'>
                         <div className='card-index'>{index + 1}</div>
@@ -72,7 +78,6 @@ const FollowedArtists = () => {
           </div>
         </div>
       );
-
 };
 
 export default FollowedArtists;

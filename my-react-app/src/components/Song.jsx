@@ -3,13 +3,13 @@ import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import { grey, parseArtists, durationInHrMinSec } from '../common';
 import styles from './Song.module.css';
-import { saveTracks, removeSavedTracks } from '../clients/SpotifyClient';
 import { memo } from 'react';
+import Waveform from './Waveform';
 
-const Song = memo(({ className, songInfo, albumCover, handleClickSaveBtnParent }) => {
+const Song = ({ className, songInfo, albumCover, handleClickSaveBtnParent }) => {
     const context = useContext(AppContext);
     const navigate = useNavigate();
-    console.log('song')
+
     const handleSecondary = () => {
         if (albumCover) {
             return `${parseArtists(songInfo.artists)}`;
@@ -96,7 +96,8 @@ const Song = memo(({ className, songInfo, albumCover, handleClickSaveBtnParent }
                 <div className={styles["duration"]}>{durationInHrMinSec(songInfo.duration_ms)}</div>
             </div>
         </div>
+        <Waveform songId={songInfo.id}/>
     </div>
-)});
+)};
 
 export default Song;

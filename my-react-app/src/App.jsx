@@ -18,6 +18,9 @@ import AlbumInfo from './pages/AlbumInfo';
 import FollowedArtists from './pages/FollowedArtists';
 import SavedSongs from './pages/SavedSongs';
 
+// po kliknięciu 'play' następuje re-render App.jsx i konkretny komponent Route również się re renderuje a wraz nim potencjalnie cała lista artystów, piosenek itp.
+// żeby temu zapobiec trzeba prawdopodobnie zmienić strukturę komponentów, tzn. useState() definiować w TopSongs, TopArtists itp. bo nie da się dać memo na Route  - można by o tym napisać w pracy
+
 export const AppContext = createContext();
 
 function App() {
@@ -136,7 +139,7 @@ function App() {
             </div>
           }
         />
-        <Route 
+        <Route
           path='/saved-songs'
           element={
             <div>

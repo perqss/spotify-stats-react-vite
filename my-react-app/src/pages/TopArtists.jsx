@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { getTopArtists, isFollowingArtists, followArtists, unfollowArtists } from '../clients/SpotifyClient';
-//import ArtistCard from '../components/ArtistCard';
 import ArtistCard from '../components/ArtistCardNoMUI';
 import { assignArtistId } from '../common';
 
@@ -15,7 +14,7 @@ const TopArtists = ({ artistTerm }) => {
   useEffect(() => {
         const fetchArtistsWrapper = async () => {
             const topArtists = await fetchTopArtists();
-            const artistIds = topArtists.map((artist) => artist.id);
+            const artistIds = topArtists.map(artist => artist.id);
             const followed = await isFollowingArtists(artistIds);
             const newArtists = topArtists.map((artist, index) => {
                 return {
@@ -62,10 +61,7 @@ const TopArtists = ({ artistTerm }) => {
           ));
   }, []);
 
-  const handleClickFollowBtnParentWrapper = useCallback((index) => () => handleClickFollowBtnParent(index), [handleClickFollowBtnParent]);
-
   return (
-    <div>
       <div className='display-outer-container'>
         <div className='display-inner-container'>
           <div className='grid-container'>
@@ -87,7 +83,6 @@ const TopArtists = ({ artistTerm }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

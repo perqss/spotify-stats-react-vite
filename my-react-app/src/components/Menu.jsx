@@ -10,7 +10,7 @@ const Menu = ({componentIndex, setTerm}) => {
   const subMenuItems = ['All Time', 'Last 6 Months', 'Last 4 Weeks'];
   const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats', 'favorite_border', 'bookmarks'];
   const navigate = useNavigate();
-
+  console.log('menu')
   const handleClickMenuItem = (index) => {
     setSelectedMenu(index);
   };
@@ -61,17 +61,6 @@ const Menu = ({componentIndex, setTerm}) => {
             break;
     }
 };
-
-//   const handleClickSubMenuItem = (subMenuItem, index) => {
-//     if (index === 0) {
-//         setPropsTerm(subMenuItem, props.setArtistTerm);
-//     } else if (index === 1) {
-//         setPropsTerm(subMenuItem, props.setSongTerm);
-//     } else if (index === 2) {
-//         setPropsTerm(subMenuItem, props.setAlbumTerm);
-//     }
-//     setSelectedSubMenu(subMenuItem);
-//   };
 
   return (
     <div>
