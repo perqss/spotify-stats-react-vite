@@ -30,7 +30,7 @@ const ArtistProfile = () => {
         {
             artistInfo && 
             <div
-                className={styles["artist-profile-display"]}
+                className={`${styles["artist-profile-display"]} artist-profile`}
             >
                 <img
                     src={artistInfo.images[0].url}

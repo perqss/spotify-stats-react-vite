@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { AppContext } from '../App';
+//import { AppContext } from '../App';
+import { PlaybackAPIContext } from './PlaybackProvider';
 import { useNavigate } from 'react-router-dom';
 import { grey, parseArtists, durationInHrMinSec } from '../common';
 import styles from './Song.module.css';
@@ -7,7 +8,7 @@ import { memo } from 'react';
 import Waveform from './Waveform';
 
 const Song = ({ className, songInfo, albumCover, handleClickSaveBtnParent }) => {
-    const context = useContext(AppContext);
+    const context = useContext(PlaybackAPIContext);
     const navigate = useNavigate();
 
     const handleSecondary = () => {
@@ -22,7 +23,7 @@ const Song = ({ className, songInfo, albumCover, handleClickSaveBtnParent }) => 
       e.stopPropagation();
       context.setArtistId(null);
       context.setOpenBottomBar(true);
-      context.setSongId(songInfo.id);
+      context.setSongId(songInfo.href.split('/').pop());
       context.setAlbumId(null);
     };
 
@@ -57,8 +58,8 @@ const Song = ({ className, songInfo, albumCover, handleClickSaveBtnParent }) => 
     };
   
   return (
-    <div className={className}>
-        <div className={styles["song-item"]} onClick={handleSongClick}>
+    <div className={`${className} song-card`}>
+        <div className={`${styles["song-item"]} song-item`} onClick={handleSongClick}>
             <div className={styles["song-left"]}>
                 <img
                     className={styles["song-graphic"]}
@@ -87,7 +88,7 @@ const Song = ({ className, songInfo, albumCover, handleClickSaveBtnParent }) => 
                     bookmark_add
                 </button>
                 <button 
-                    className={`material-icons ${styles["play-button"]}`}
+                    className={`material-icons ${styles["play-button"]} play-button`}
                     onClick={handleClickPlayBtn}
                     title="Play"
                 >

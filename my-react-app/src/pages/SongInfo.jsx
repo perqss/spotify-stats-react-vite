@@ -29,7 +29,7 @@ const SongInfo = () => {
       </button>
       {
         songInfo && 
-        <div className={styles["song-display"]}>
+        <div className={`${styles["song-display"]} song-display`}>
           <div className={styles["song-content-row"]}>
               <img 
                   className="cover-display"

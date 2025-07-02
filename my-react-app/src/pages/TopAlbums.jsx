@@ -27,6 +27,7 @@ const TopAlbums = ({ albumTerm }) => {
                         count: 1,
                         image: song.album.images[0].url,
                         id: song.album.id,
+                        href: song.album.href
                     }
                 } else {
                     result[song.album.name].count += 1;

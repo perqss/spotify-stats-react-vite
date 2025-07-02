@@ -1,19 +1,21 @@
-import { useContext, memo, useEffect } from 'react';
-import { AppContext } from '../App';
+import { useContext, memo, useEffect, useCallback } from 'react';
+//import { AppContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 import { spotifyGreen } from '../common';
+import { PlaybackAPIContext } from './PlaybackProvider';
 
-const ArtistCard = ({ className, artistInfo, handleClickFollowBtnParent }) => {
-  const context = useContext(AppContext);
+const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) => {
+  console.log('artist card');
+  const context = useContext(PlaybackAPIContext);
   const navigate = useNavigate();
-
-  const handleClickPlayBtn = (e) => {
+  const handleClickPlayBtn = useCallback((e) => {
     e.stopPropagation();
-    context.setArtistId(artistInfo.id);
-    context.setOpenBottomBar(true);
-    context.setSongId(null);
-    context.setAlbumId(null);
-  };
+    // context.setArtistId(artistInfo.href.split('/').pop());
+    // context.setOpenBottomBar(true);
+    // context.setSongId(null);
+    // context.setAlbumId(null);
+    context.playArtist(artistInfo.id);
+  }, []);
 
   const handleClickArtist = () => {
     navigate(`/artist/${artistInfo.id}`);
@@ -55,14 +57,14 @@ const ArtistCard = ({ className, artistInfo, handleClickFollowBtnParent }) => {
             <div>
               <button 
                   style={{backgroundColor: 'inherit'}} 
-                  className="material-icons" 
+                  className="material-icons play-button" 
                   onClick={handleClickPlayBtn}
                   title="Play"
                 >
                     play_circle
                 </button>
                 <button 
-                  className="material-icons follow-button" 
+                  className={`material-icons follow-button ${artistInfo.isFollowing ? 'followed' : 'not-followed'}`} 
                   style={{backgroundColor: 'inherit', color: artistInfo.isFollowing ? spotifyGreen : 'white'}}
                   onClick={handleClickFollowBtn}
                   title="Follow"
@@ -73,6 +75,6 @@ const ArtistCard = ({ className, artistInfo, handleClickFollowBtnParent }) => {
         </div>
     </div>
   );
-};
+});
 
 export default ArtistCard;

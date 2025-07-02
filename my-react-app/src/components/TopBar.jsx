@@ -8,7 +8,7 @@ const TopBar = () => {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
-    console.log('top bar')
+
   useEffect(() => {
     const getProfileWrapper = async () => {
         const response = await getProfile();

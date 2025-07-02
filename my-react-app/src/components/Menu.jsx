@@ -3,20 +3,22 @@ import TopBar from './TopBar';
 import { useNavigate } from 'react-router-dom';
 import styles from './Menu.module.css'
 
-const Menu = ({componentIndex, setTerm}) => {
+const Menu = ({ componentIndex, setTerm, closeSubMenu }) => {
   const [selectedMenu, setSelectedMenu] = useState(componentIndex);
   const [selectedSubMenu, setSelectedSubMenu] = useState('All Time');
   const menuItems = ['Top Artists', 'Top Songs', 'Top Albums', 'Recently Played', 'Music Taste', 'Followed Artists', 'Saved Songs'];
+  const menuItemsSelectors = ['top-artists', 'top-songs', 'top-albums', 'recently-played', 'music-taste', 'followed-artists', 'saved-songs'];
   const subMenuItems = ['All Time', 'Last 6 Months', 'Last 4 Weeks'];
+  const subMenuSelectors = ['all-time', 'last-6-months', 'last-4-weeks'];
   const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats', 'favorite_border', 'bookmarks'];
   const navigate = useNavigate();
-  console.log('menu')
+
   const handleClickMenuItem = (index) => {
     setSelectedMenu(index);
   };
 
   const openSubMenu = (index) => {
-    return [0, 1, 2].includes(index) && selectedMenu === index;
+    return [0, 1, 2].includes(index) && selectedMenu === index && !closeSubMenu;
   };
 
   useEffect(() => {
@@ -69,7 +71,7 @@ const Menu = ({componentIndex, setTerm}) => {
         {menuItems.map((item, index) => (
           <Fragment key={index}>
             <div
-              className={`menu-${index} ${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
+              className={`${menuItemsSelectors[index]} ${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
               onClick={() => handleClickMenuItem(index)}
             >
               <span className={`material-icons ${styles["icon"]}`}>{menuIcons[index]}</span>
@@ -81,7 +83,7 @@ const Menu = ({componentIndex, setTerm}) => {
                 {subMenuItems.map((subItem, i) => (
                   <div
                     key={i}
-                    className={`${styles["submenu-item"]} ${selectedSubMenu === subItem ? styles["selected-submenu"] : ""}`}
+                    className={`${styles["submenu-item"]} ${subMenuSelectors[i]} ${selectedSubMenu === subItem ? styles["selected-submenu"] : ""}`}
                     onClick={() => handleClickSubMenuItem(subItem)}
                   >
                     {subItem}

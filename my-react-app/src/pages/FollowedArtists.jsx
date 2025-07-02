@@ -66,7 +66,7 @@ const FollowedArtists = () => {
                       <div className='card-wrapper'>
                         <div className='card-index'>{index + 1}</div>
                         <ArtistCard
-                          className={assignArtistId(artists, index)}
+                          className={assignArtistId(artists, index)} 
                           artistInfo={artist}
                           handleClickFollowBtnParent={handleClickFollowBtnParent}
                         />

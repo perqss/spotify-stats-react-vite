@@ -29,8 +29,22 @@ const TopSongs = ({ songTerm }) => {
     fetchSongsWrapper();
   }, [songTerm])
 
-  const handleClickSaveBtnParent = useCallback(async (song) => {
-    if (!song.isSaved) {
+  // const handleClickSaveBtnParent = useCallback(async (song) => {
+  //   if (song.isSaved) {
+  //     await removeSavedTracks([song.id]);
+  //   } else {
+  //     await saveTracks([song.id]);
+  //   }
+  //   setSongs(prevSongs => 
+  //     prevSongs.map(s =>
+  //       s.id === song.id
+  //         ? { ...s, isSaved: !s.isSaved }
+  //         : s
+  //     )
+  //   )
+  // }, []);
+    const handleClickSaveBtnParent = async (song) => {
+    if (song.isSaved) {
       await removeSavedTracks([song.id]);
     } else {
       await saveTracks([song.id]);
@@ -42,7 +56,7 @@ const TopSongs = ({ songTerm }) => {
           : s
       )
     )
-  }, []);
+  };
 
   return (
     <div className='display-outer-container'>
