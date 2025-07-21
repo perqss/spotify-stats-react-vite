@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Song from '../components/Song';
 import SpotifyPlayButton from '../components/SpotifyPlayButton';
 import styles from '../components/AlbumInfo.module.css';
-import { Fragment, useState, useEffect, useCallback } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
 const AlbumInfo = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const AlbumInfo = () => {
     fetchAlbumWrapper();
   }, [])
 
-  const handleClickSaveBtnParent = useCallback(async (song) => {
+  const handleClickSaveBtnParent = async (song) => {
     if (!song.isSaved) {
       await saveTracks([song.id]);
     } else {
@@ -55,10 +55,10 @@ const AlbumInfo = () => {
         ),
       },
     }));
-  }, []);
+  };
 
   return (
-    <Fragment>
+    <>
       <button 
           className="back-button material-icons" 
           onClick={() => navigate(-1)}
@@ -117,8 +117,8 @@ const AlbumInfo = () => {
             </div>
         </div>
       }
-    </Fragment>
+    </>
   );
-}
+};
 
 export default AlbumInfo;

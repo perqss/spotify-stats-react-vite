@@ -1,10 +1,10 @@
 import { getSavedTracks, areTracksSaved, removeSavedTracks } from "../clients/SpotifyClient";
 import Song from "../components/Song";
 import { assignSongId } from "../common";
-import React, { useEffect, useState, Fragment, useCallback } from "react";
+import { useEffect, useState, Fragment } from "react";
 
 const SavedSongs = () => {
-    const [songs, setSongs] = useState(null);
+    const [songs, setSongs] = useState([]);
 
     const fetchSavedTracks = async () => {
         const response = await getSavedTracks();
@@ -28,19 +28,18 @@ const SavedSongs = () => {
         fetchSongsWrapper();
     }, [])
 
-    const handleClickSaveBtnParent = useCallback(async (song) => {
+    const handleClickSaveBtnParent = async (song) => {
         await removeSavedTracks([song.id]);
         setSongs(prevSongs => 
             prevSongs.filter(s => s.id !== song.id)
-        )
-    }, []);
+        );
+    };
 
     return (
-        <div>
           <div className='display-outer-container'>
             <div className='display-inner-container'>
               <div className='song-container'>
-                {songs && songs.map((song, index) =>
+                {songs.map((song, index) =>
                   <Fragment key={song.id}>
                       <div>{index + 1}.</div>
                       <Song
@@ -53,8 +52,7 @@ const SavedSongs = () => {
               </div>
             </div>
           </div>
-        </div>
-    )
+    );
 };
 
 export default SavedSongs;

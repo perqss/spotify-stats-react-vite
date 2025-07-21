@@ -1,15 +1,13 @@
 import { useState, useEffect, Fragment } from 'react';
 import TopBar from './TopBar';
 import { useNavigate } from 'react-router-dom';
-import styles from './Menu.module.css'
+import styles from './Menu.module.css';
 
 const Menu = ({ componentIndex, setTerm, closeSubMenu }) => {
   const [selectedMenu, setSelectedMenu] = useState(componentIndex);
   const [selectedSubMenu, setSelectedSubMenu] = useState('All Time');
   const menuItems = ['Top Artists', 'Top Songs', 'Top Albums', 'Recently Played', 'Music Taste', 'Followed Artists', 'Saved Songs'];
-  const menuItemsSelectors = ['top-artists', 'top-songs', 'top-albums', 'recently-played', 'music-taste', 'followed-artists', 'saved-songs'];
   const subMenuItems = ['All Time', 'Last 6 Months', 'Last 4 Weeks'];
-  const subMenuSelectors = ['all-time', 'last-6-months', 'last-4-weeks'];
   const menuIcons = ['mic', 'music_note', 'album', 'history', 'query_stats', 'favorite_border', 'bookmarks'];
   const navigate = useNavigate();
 
@@ -71,7 +69,7 @@ const Menu = ({ componentIndex, setTerm, closeSubMenu }) => {
         {menuItems.map((item, index) => (
           <Fragment key={index}>
             <div
-              className={`${menuItemsSelectors[index]} ${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
+              className={`${styles["menu-item"]} ${selectedMenu === index ? styles["selected-menu"] : ""}`}
               onClick={() => handleClickMenuItem(index)}
             >
               <span className={`material-icons ${styles["icon"]}`}>{menuIcons[index]}</span>
@@ -83,7 +81,7 @@ const Menu = ({ componentIndex, setTerm, closeSubMenu }) => {
                 {subMenuItems.map((subItem, i) => (
                   <div
                     key={i}
-                    className={`${styles["submenu-item"]} ${subMenuSelectors[i]} ${selectedSubMenu === subItem ? styles["selected-submenu"] : ""}`}
+                    className={`${styles["submenu-item"]} ${selectedSubMenu === subItem ? styles["selected-submenu"] : ""}`}
                     onClick={() => handleClickSubMenuItem(subItem)}
                   >
                     {subItem}
@@ -95,7 +93,7 @@ const Menu = ({ componentIndex, setTerm, closeSubMenu }) => {
         ))}
       </aside>
     </div>
-  )
-}
+  );
+};
 
 export default Menu

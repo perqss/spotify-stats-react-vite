@@ -1,6 +1,4 @@
 import { useContext } from 'react';
-import { mainColor } from '../common';
-//import { AppContext } from '../App';
 import { PlaybackAPIContext } from './PlaybackProvider';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,10 +12,7 @@ const AlbumCard = ({ album }) => {
 
     const handleClickPlayBtn = (event) => {
         event.stopPropagation();
-        context.setAlbumId(album[1].href.split('/').pop());
-        context.setOpenBottomBar(true);
-        context.setSongId(null);
-        context.setArtistId(null);
+        context.playAlbum(album[1].id);
     };
 
     return (

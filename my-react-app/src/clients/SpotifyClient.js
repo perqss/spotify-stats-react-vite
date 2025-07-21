@@ -48,6 +48,7 @@ export const removeSavedTracks = async (trackIds) => {
         response = await spotify().removeFromMySavedTracks({ ids: trackIds });
     } catch (e) {
         console.log(e);
+        
     }
 
     return response;

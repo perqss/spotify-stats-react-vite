@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getFollowedArtists, isFollowingArtists, unfollowArtists } from "../clients/SpotifyClient";
-import ArtistCard from "../components/ArtistCardNoMUI";
+import ArtistCard from "../components/ArtistCard";
 import { assignArtistId } from "../common";
 
 
 const FollowedArtists = () => {
-    const [artists, setArtists] = useState(null);
+    const [artists, setArtists] = useState([]);
 
     const fetchFollowedArtists = async () => {
         const response = await getFollowedArtists();
@@ -29,36 +29,18 @@ const FollowedArtists = () => {
         fetchArtistsWrapper();
     }, [])
 
-    // const handleClickFollowBtnParent = useCallback(async (artist) => {
-    //   await unfollowArtists([artist.id]);
-    //   setArtists(prevArtists => 
-    //     prevArtists.filter(tempArtist => tempArtist.id !== artist.id)
-    //   )
-    // }, []);
-
     const handleClickFollowBtnParent = async (artist) => {
       await unfollowArtists([artist.id]);
       setArtists(prevArtists => 
-        prevArtists.filter(tempArtist => tempArtist.id !== artist.id)
+        prevArtists.filter(a => a.id !== artist.id)
       )
     };
-    // useCallback does not limit the renders in this case if passed to ArtistCard
-    // const handleClickFollowBtnParent = useCallback(
-    //     async (index) => {
-    //       await unfollowArtists([artists[index].id]);
-    //       const newArtists = artists.filter((_, i) => i !== index);
-    //       setArtists(newArtists);
-    //     }, [artists]);
-
-    // const createFollowHandler = useCallback(
-    //         (index) => () => handleClickFollowBtnParent(index), [handleClickFollowBtnParent]);
 
     return (
-        <div>
           <div className='display-outer-container'>
             <div className='display-inner-container'>
               <div className='grid-container'>
-                {artists && artists.map((artist, index) => 
+                {artists.map((artist, index) => 
                     <div 
                       className='grid-item' 
                       key={artist.id}
@@ -76,7 +58,6 @@ const FollowedArtists = () => {
               </div>
             </div>
           </div>
-        </div>
       );
 };
 

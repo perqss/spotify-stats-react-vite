@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import { getReleaseDateYear, parseArtists } from '../common';
 import { getTrack } from '../clients/SpotifyClient';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const SongInfo = () => {
   }, [])
   
   return (
-    <Fragment>
+    <>
       <button
         className="material-icons back-button"
         onClick={() => navigate(-1)}
@@ -29,7 +29,7 @@ const SongInfo = () => {
       </button>
       {
         songInfo && 
-        <div className={`${styles["song-display"]} song-display`}>
+        <div className={styles["song-display"]}>
           <div className={styles["song-content-row"]}>
               <img 
                   className="cover-display"
@@ -58,8 +58,8 @@ const SongInfo = () => {
           </div>
       </div>
       }
-    </Fragment>
-  )
+    </>
+  );
 };
 
 export default SongInfo;

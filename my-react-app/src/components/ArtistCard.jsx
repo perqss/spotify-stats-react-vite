@@ -1,21 +1,16 @@
-import { useContext, memo, useEffect, useCallback } from 'react';
-//import { AppContext } from '../App';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { spotifyGreen } from '../common';
 import { PlaybackAPIContext } from './PlaybackProvider';
 
-const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) => {
-  console.log('artist card');
+const ArtistCard = ({ className, artistInfo, handleClickFollowBtnParent }) => {
   const context = useContext(PlaybackAPIContext);
   const navigate = useNavigate();
-  const handleClickPlayBtn = useCallback((e) => {
+
+  const handleClickPlayBtn = (e) => {
     e.stopPropagation();
-    // context.setArtistId(artistInfo.href.split('/').pop());
-    // context.setOpenBottomBar(true);
-    // context.setSongId(null);
-    // context.setAlbumId(null);
     context.playArtist(artistInfo.id);
-  }, []);
+  };
 
   const handleClickArtist = () => {
     navigate(`/artist/${artistInfo.id}`);
@@ -24,27 +19,6 @@ const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) 
   const handleClickFollowBtn = async (event) => {
     event.stopPropagation();
     await handleClickFollowBtnParent(artistInfo);
-    // switch (option) {
-    //   case 'followed':
-    //     await unfollowArtists([artistInfo.id]);
-    //     setArtists(prevArtists => prevArtists.filter(artist => artist.id !== artistInfo.id));
-    //     break;
-    //   case 'top':
-    //     if (!artistInfo.isFollowing) {
-    //       await followArtists([artistInfo.id]);
-    //     } else {
-    //       await unfollowArtists([artistInfo.id]);
-    //     }
-
-    //     setArtists(prevArtists =>
-    //       prevArtists.map(artist =>
-    //         artist.id === artistInfo.id
-    //           ? { ...artist, isFollowing: !artist.isFollowing }
-    //           : artist
-    //       ));
-          
-    //     break;
-    // }
   };
 
   return (
@@ -56,7 +30,6 @@ const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) 
             </div>
             <div>
               <button 
-                  style={{backgroundColor: 'inherit'}} 
                   className="material-icons play-button" 
                   onClick={handleClickPlayBtn}
                   title="Play"
@@ -75,6 +48,6 @@ const ArtistCard = memo(({ className, artistInfo, handleClickFollowBtnParent }) 
         </div>
     </div>
   );
-});
+};
 
 export default ArtistCard;

@@ -1,11 +1,11 @@
-import { useState, useEffect, Fragment, useCallback } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { getTopSongs, areTracksSaved, saveTracks, removeSavedTracks } from '../clients/SpotifyClient';
 import Song from '../components/Song';
 import { assignSongId } from '../common';
 
 
 const TopSongs = ({ songTerm }) => {
-  const [songs, setSongs] = useState(null);
+  const [songs, setSongs] = useState([]);
 
   const fetchTopSongs = async () => {
     const response = await getTopSongs(songTerm);
@@ -29,21 +29,7 @@ const TopSongs = ({ songTerm }) => {
     fetchSongsWrapper();
   }, [songTerm])
 
-  // const handleClickSaveBtnParent = useCallback(async (song) => {
-  //   if (song.isSaved) {
-  //     await removeSavedTracks([song.id]);
-  //   } else {
-  //     await saveTracks([song.id]);
-  //   }
-  //   setSongs(prevSongs => 
-  //     prevSongs.map(s =>
-  //       s.id === song.id
-  //         ? { ...s, isSaved: !s.isSaved }
-  //         : s
-  //     )
-  //   )
-  // }, []);
-    const handleClickSaveBtnParent = async (song) => {
+  const handleClickSaveBtnParent = async (song) => {
     if (song.isSaved) {
       await removeSavedTracks([song.id]);
     } else {
@@ -62,7 +48,7 @@ const TopSongs = ({ songTerm }) => {
     <div className='display-outer-container'>
       <div className='display-inner-container'>
         <div className='song-container'>
-          {songs && songs.map((song, index) =>
+          {songs.map((song, index) =>
             <Fragment key={song.id}>
                 <div>{index + 1}.</div>
                 <Song
@@ -75,7 +61,7 @@ const TopSongs = ({ songTerm }) => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default TopSongs;

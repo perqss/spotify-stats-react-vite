@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { PlaybackStateContext } from "./PlaybackProvider";
 
 const BottomBar = () => {
   const context = useContext(PlaybackStateContext);
-  console.log('bottom bar')
+  const contextState = context.state;
 
   const chooseSrc = () => {
-    if (context.songId) {
-        return `https://open.spotify.com/embed/track/${context.songId}?utm_source=generator`;
-    } else if (context.artistId) {
-        return `https://open.spotify.com/embed/artist/${context.artistId}?utm_source=generator`;
-    } else if (context.albumId) {
-        return `https://open.spotify.com/embed/album/${context.albumId}?utm_source=generator`;
+    if (contextState.songId) {
+        return `https://open.spotify.com/embed/track/${contextState.songId}?utm_source=generator`;
+    } else if (contextState.artistId) {
+        return `https://open.spotify.com/embed/artist/${contextState.artistId}?utm_source=generator`;
+    } else if (contextState.albumId) {
+        return `https://open.spotify.com/embed/album/${contextState.albumId}?utm_source=generator`;
     }
     return '';
   };
 
   return (
     <div>
-        {context.open && <div style={{marginTop: '100px'}}>
+        {contextState.open && <div style={{marginTop: '100px'}}>
             <iframe
                 style={{
                     position: 'fixed',
@@ -43,13 +43,13 @@ const BottomBar = () => {
                     backgroundColor: 'inherit',
                 }}
                 onClick={() => context.setState(s => ({...s, open: false}))}
-                className="material-icons close-iframe"
+                className="material-icons"
             >
                 cancel
             </button>
         </div>}
     </div>
-  )
-}
+  );
+};
 
 export default BottomBar;

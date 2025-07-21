@@ -30,7 +30,7 @@ const ArtistProfile = () => {
         {
             artistInfo && 
             <div
-                className={`${styles["artist-profile-display"]} artist-profile`}
+                className={styles["artist-profile-display"]}
             >
                 <img
                     src={artistInfo.images[0].url}
@@ -59,7 +59,7 @@ const ArtistProfile = () => {
             </div>
         }
     </>
-  )
+  );
 };
 
 export default ArtistProfile;

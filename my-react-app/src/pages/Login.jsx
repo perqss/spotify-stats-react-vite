@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import '../App.css';
-import logo from '../assets/react.svg';
+import logo from '../assets/react.svg?inline';
 import  { getLoginUrl, getCodeFromUrl, getTokens } from '../common';
 import { useNavigate } from 'react-router-dom';
 import styles from '../components/Login.module.css'
-
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,6 +39,6 @@ const Login = () => {
       </header>
     </div>
   );
-}
+};
 
 export default Login;

@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 const Waveform = ({ songId }) => {
   const waveform = () => {
     const hash = [...songId].reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -15,12 +13,11 @@ const Waveform = ({ songId }) => {
     return data;
   };
 
-  const buildWavePath = (data) =>
-  {
+  const buildWavePath = (data) => {
     return data
-      .map((v, i) => `M${i},50 v-${v}`) // 50 = wysokość całego wykresu
+      .map((v, i) => `M${i},50 v-${v}`)
       .join(' ');
-  }
+  };
 
   return (
     <svg width="100%" height="50" >

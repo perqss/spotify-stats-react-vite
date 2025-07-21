@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getTopArtists, isFollowingArtists, followArtists, unfollowArtists } from '../clients/SpotifyClient';
-import ArtistCard from '../components/ArtistCardNoMUI';
+import ArtistCard from '../components/ArtistCard';
 import { assignArtistId } from '../common';
 
 const TopArtists = ({ artistTerm }) => {
-  const [artists, setArtists] = useState();
+  const [artists, setArtists] = useState([]);
 
   const fetchTopArtists = async () => {
     const response = await getTopArtists(artistTerm);
@@ -28,47 +28,28 @@ const TopArtists = ({ artistTerm }) => {
         fetchArtistsWrapper();
   }, [artistTerm])
 
-  // const handleClickFollowBtnParent = async (index) => {
-  //   if (!artists[index].isFollowing) {
-  //     await followArtists([artists[index].id]);
-  //   } else {
-  //     await unfollowArtists([artists[index].id]);
-  //   }
-  //   artists[index].isFollowing = !artists[index].isFollowing;
-  //   setArtists([...artists]);
-  // };
-
-  const handleClickFollowBtnParent = useCallback(async (artist) => {
-    // passing an index would not work, because artists array is undefined
-    // console.log(artists, index)
-    // if (!artists[index].isFollowing) {
-    //   await followArtists([artists[index].id]);
-    // } else {
-    //   await unfollowArtists([artists[index].id]);
-    // }
-    // artists[index].isFollowing = !artists[index].isFollowing;
-    // setArtists([...artists]);
+  const handleClickFollowBtnParent = async (artist) => {
     if (!artist.isFollowing) {
       await followArtists([artist.id]);
     } else {
       await unfollowArtists([artist.id]);
     }
     setArtists(prevArtists =>
-            prevArtists.map(tempArtist => 
-              tempArtist.id === artist.id
-              ? { ...tempArtist, isFollowing: !artist.isFollowing }
-              : tempArtist            
+            prevArtists.map(a => 
+              a.id === artist.id
+              ? { ...a, isFollowing: !artist.isFollowing }
+              : a            
           ));
-  }, []);
+  };
 
   return (
       <div className='display-outer-container'>
         <div className='display-inner-container'>
           <div className='grid-container'>
-            {artists && artists.map((artist, index) => 
+            {artists.map((artist, index) => 
                 <div 
                   className='grid-item' 
-                  key={artist.name}
+                  key={artist.id}
                 >
                   <div className='card-wrapper'>
                     <div className='card-index'>{index + 1}</div>
@@ -84,6 +65,6 @@ const TopArtists = ({ artistTerm }) => {
         </div>
       </div>
   );
-}
+};
 
 export default TopArtists;
